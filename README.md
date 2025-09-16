@@ -1,3 +1,35 @@
+# danielKB
+This is a keyboard I made for myself. Since I like the HHKB Style, I have made some modifications based on HHKB Layout.
+
+
+
+## Dev. Info
+- MPU : STM32F103RCT6
+
+- IDE : STM32CubeIDE
+
+- ECAD : EasyEDA Pro
+
+- PCB and PCBA were manufactured through JLCPCB( [jlcpcb.com](https://jlcpcb.com/) )
+        
+  
+  
+## Issue
+ - Currently, Volume Up/Down and Mute key is not operated.
+   
+   
+   
+   
+
+## PCB Layout
+
+![top](/home/yukinpl/repo/danielKB/PCB_Layout/top.png)
+
+![bottom](/home/yukinpl/repo/danielKB/PCB_Layout/bottom.png)
+
+
+
+   
 
 ## Schematic
 

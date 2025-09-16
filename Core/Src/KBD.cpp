@@ -474,7 +474,7 @@ void daniel::KBD::Loop()
 			input.SetLeftGUI   ( 0 < modKeyCnt[ 6 ][ 1 ] ? 0x01 : 0x00 ) ;
 			input.SetRightGUI  ( 0 < modKeyCnt[ 7 ][ 1 ] ? 0x01 : 0x00 ) ;
 
-			KeyPress  ( input ) ;
+			KeyPress( input ) ;
 
 			if( false == isModKey )
 			{
