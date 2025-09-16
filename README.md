@@ -23,9 +23,9 @@ This is a keyboard I made for myself. Since I like the HHKB Style, I have made s
 
 ## PCB Layout
 
-![top](/home/yukinpl/repo/danielKB/PCB_Layout/top.png)
+![top](./PCB_Layout/top.png)
 
-![bottom](/home/yukinpl/repo/danielKB/PCB_Layout/bottom.png)
+![bottom](./PCB_Layout/bottom.png)
 
 
 
