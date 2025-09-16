@@ -44,10 +44,7 @@ daniel::KBD::KBD()
 #endif
 	  anyKeyPressed( false ) , isBlink( false )
 {
-	uint16_t bufSize = 100 ;
-	rBuf.Alloc( bufSize ) ;
 
-	isBufAble = ( bufSize == rBuf.GetSize() ) ? true : false ;
 }
 
 
@@ -63,10 +60,7 @@ daniel::KBD::KBD(
 #endif
 	  anyKeyPressed( false ) , isBlink( false )
 {
-	uint16_t bufSize = 100 ;
-	rBuf.Alloc( bufSize ) ;
 
-	isBufAble = ( bufSize == rBuf.GetSize() ) ? true : false ;
 }
 
 
@@ -350,10 +344,6 @@ void daniel::KBD::Run()
 	}
 #endif
 
-	if( true != isBufAble )
-	{
-		return ;
-	}
 
 	HAL_ADC_Start_DMA( pAdcHandle , ( uint32_t * ) adcValues , 4 ) ;
 	DefaultOutPut() ;
@@ -376,9 +366,6 @@ void daniel::KBD::Run()
 		Loop() ;
 	}
 }
-
-
-extern uint8_t aliveTick ;
 
 
 void daniel::KBD::Loop()

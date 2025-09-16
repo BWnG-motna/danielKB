@@ -6,7 +6,7 @@
 
 #include "KeyPage.h"
 #include "HID_InputReport.h"
-#include "RingBuffer.h"
+
 
 #if ( USB_ENABLED )
 #include "usb_device.h"
@@ -45,7 +45,7 @@ private :
 
 	bool anyKeyPressed ;
 	bool isBlink ;
-	bool isBufAble ;
+
 
 private :
 	uint32_t prevTime [ keyCnt ] ;
@@ -53,8 +53,6 @@ private :
 private :
 	GPIO gpio ;
 
-private :
-	RingBuffer< HID_InputReport > rBuf ;
 
 private :
 	void SetSigA( bool const & isSet ) ;
