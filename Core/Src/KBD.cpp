@@ -426,7 +426,7 @@ void daniel::KBD::Loop()
 			repeat[ pos ] = false ;
 		}
 
-		if(  true == currKeyPressed[ pos ] &&  true == prevKeyPressed[ pos ] )
+		/**/ if(  true == currKeyPressed[ pos ] &&  true == prevKeyPressed[ pos ] )
 		{
 			if( false == repeat[ pos ] && ( 200 > diffTime ) )
 			{
@@ -449,6 +449,12 @@ void daniel::KBD::Loop()
 			daniel::KeyPage k = ( 0 < modKeyCnt[ 0 ][ 1 ] ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
 
 			HID_InputReport input ;
+
+			if( KeyPage::CapsLock == k ) // exception handling - it recognize pressing FN + Left CTRL
+			{
+				isModKey = false ;
+				modKeyCnt[ 1 ][ 1 ] = 0 ;
+			}
 
 			/**/ if( true  == isModKey && true == currKeyPressed[ pos ] )
 			{
