@@ -252,40 +252,6 @@ uint16_t daniel::HID_InputReport::GetSerializedLength() const
 }
 
 
-bool daniel::HID_InputReport::operator==( HID_InputReport const & ir )
-{
-	uint8_t * pSelf  =    GetSerialized() ;
-	uint8_t * pOther = ir.GetSerialized() ;
-
-	for( uint8_t pos = 0 ; pos < 9 ; ++pos )
-	{
-		if( pSelf[ pos ] != pOther[ pos ] )
-		{
-			return false ;
-		}
-	}
-
-	return true ;
-}
-
-
-bool daniel::HID_InputReport::operator!=( HID_InputReport const & ir )
-{
-	uint8_t * pSelf  =    GetSerialized() ;
-	uint8_t * pOther = ir.GetSerialized() ;
-
-	for( uint8_t pos = 0 ; pos < 9 ; ++pos )
-	{
-		if( pSelf[ pos ] != pOther[ pos ] )
-		{
-			return true ;
-		}
-	}
-
-	return false ;
-}
-
-
 uint8_t daniel::HID_InputReport::GetModKey() const
 {
 	uint8_t keyCode = 0x00 ;

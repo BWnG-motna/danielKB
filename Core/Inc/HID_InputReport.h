@@ -48,9 +48,6 @@ public :
 	void SetKeyCode6  ( uint8_t const & keyCode ) ;
 	void SetKeyCode   ( uint8_t const & keyCode ) ;
 
-public :
-	bool operator==( HID_InputReport const & ir ) ;
-	bool operator!=( HID_InputReport const & ir ) ;
 
 public :
 	uint8_t GetModKey()   const ;

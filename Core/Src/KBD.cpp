@@ -1,9 +1,6 @@
 #include "KBD.h"
-#include "HID_InputReport.h"
-
-#if ( USB_ENABLED )
 #include "usbd_hid.h"
-#endif
+#include "HID_InputReport.h"
 
 using key = daniel::KeyPage ;
 
@@ -38,27 +35,14 @@ daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 
 
 daniel::KBD::KBD()
-	: pAdcHandle( nullptr ) ,
-#if ( USB_ENABLED )
-	  pUsbHandle( nullptr ) ,
-#endif
-	  anyKeyPressed( false ) , isBlink( false )
+	: pAdcHandle( nullptr ) , pUsbHandle( nullptr )
 {
 
 }
 
 
-daniel::KBD::KBD(
-	ADC_HandleTypeDef * _pAdcHandle
-#if ( USB_ENABLED )
-	, USBD_HandleTypeDef * _pUsbHandle
-#endif
-)
-	: pAdcHandle( _pAdcHandle ) ,
-#if ( USB_ENABLED )
-	  pUsbHandle( _pUsbHandle ) ,
-#endif
-	  anyKeyPressed( false ) , isBlink( false )
+daniel::KBD::KBD( ADC_HandleTypeDef * _pAdcHandle , USBD_HandleTypeDef * _pUsbHandle )
+	: pAdcHandle( _pAdcHandle ) , pUsbHandle( _pUsbHandle )
 {
 
 }
@@ -70,12 +54,10 @@ void daniel::KBD::SetAdcHandle( ADC_HandleTypeDef * pHandle )
 }
 
 
-#if ( USB_ENABLED )
 void daniel::KBD::SetUSBHandle( USBD_HandleTypeDef * pHandle )
 {
 	pUsbHandle = pHandle ;
 }
-#endif
 
 
 void daniel::KBD::SetSigA( bool const & isSet )
@@ -205,16 +187,6 @@ void daniel::KBD::GetIn()
 	GetInB() ;
 	GetInC() ;
 	GetInD() ;
-
-	anyKeyPressed = false ;
-	for( uint8_t pos = 0 ; pos < 8 ; ++pos )
-	{
-		if( true == inKey[ pos ] )
-		{
-			anyKeyPressed = true ;
-			break ;
-		}
-	}
 }
 
 
@@ -344,7 +316,6 @@ void daniel::KBD::Run()
 	}
 #endif
 
-
 	HAL_ADC_Start_DMA( pAdcHandle , ( uint32_t * ) adcValues , 4 ) ;
 	DefaultOutPut() ;
 
@@ -370,20 +341,18 @@ void daniel::KBD::Run()
 
 void daniel::KBD::Loop()
 {
-	uint8_t const     fnPos = 55 ;
-	uint8_t const  LCtrlPos = 64 ;
-	uint8_t const LShiftPos = 72 ;
-	uint8_t const RShiftPos = 73 ;
-	uint8_t const   LAltPos = 86 ;
-	uint8_t const   RAltPos = 87 ;
-	uint8_t const   LGuiPos = 94 ;
-	uint8_t const   RGuiPos = 95 ;
+	typedef struct
+	{
+		uint8_t keyPos ;
+		bool isPressed ;
 
-	uint8_t modKeyCnt[ 8 ][ 2 ] = {
-		{     fnPos , 0 } , {  LCtrlPos , 0 } ,
-		{ LShiftPos , 0 } , { RShiftPos , 0 } ,
-		{   LAltPos , 0 } , {   RAltPos , 0 } ,
-		{   LGuiPos , 0 } , {   RGuiPos , 0 }
+	} KeyStatus ;
+
+	KeyStatus modKeySt[ 8 ] = {
+		{     keyFnPos , 0 } , {  keyLCtrlPos , 0 } ,
+		{ keyLShiftPos , 0 } , { keyRShiftPos , 0 } ,
+		{   keyLAltPos , 0 } , {   keyRAltPos , 0 } ,
+		{   keyLGuiPos , 0 } , {   keyRGuiPos , 0 }
 	} ;
 
 	for( uint8_t outPos = 0 , pivotPos  = 0 ; outPos < outSignal ; ++outPos )
@@ -396,9 +365,9 @@ void daniel::KBD::Loop()
 			uint8_t idx = outPos * 8 + inPos ;
 			currKeyPressed[ idx ] = inKey[ inPos ] ;
 
-			if( 7 >= pivotPos && modKeyCnt[ pivotPos ][ 0 ] == idx )
+			if( 7 >= pivotPos && modKeySt[ pivotPos ].keyPos == idx )
 			{
-				modKeyCnt[ pivotPos++ ][ 1 ] += ( true == inKey[ inPos ] ? 1 : 0 ) ;
+				modKeySt[ pivotPos++ ].isPressed = inKey[ inPos ] ;
 			}
 		}
 	}
@@ -410,7 +379,7 @@ void daniel::KBD::Loop()
 		uint32_t diffTime = currTime - prevTime[ pos ] ;
 
 		bool isModKey = false ;
-		if( 7 >= pivotPos && modKeyCnt[ pivotPos ][ 0 ] == pos )
+		if( 7 >= pivotPos && modKeySt[ pivotPos ].keyPos == pos )
 		{
 			isModKey = true ;
 			++pivotPos ;
@@ -445,33 +414,32 @@ void daniel::KBD::Loop()
 
 	    if( key::None != keymap[ pos ] )
 		{
-			daniel::KeyPage k = ( 0 < modKeyCnt[ 0 ][ 1 ] ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
+			daniel::KeyPage k = ( 0 < modKeySt[ 0 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
 
 			HID_InputReport input( 1 ) ;
 
 			if( KeyPage::CapsLock == k ) // exception handling - it recognize pressing FN + Left CTRL
 			{
 				isModKey = false ;
-				modKeyCnt[ 1 ][ 1 ] = 0 ;
+				modKeySt[ 1 ].isPressed = 0 ;
 			}
 
 			/**/ if( true  == isModKey && true == currKeyPressed[ pos ] )
 			{
 				input.SetKeyCode1( static_cast< uint8_t >( key::None ) ) ;
-
 			}
 			else if( false == isModKey && true == currKeyPressed[ pos ] )
 			{
 				input.SetKeyCode1( static_cast< uint8_t >( k ) ) ;
 			}
 
-			input.SetLeftCTRL  ( 0 < modKeyCnt[ 1 ][ 1 ] ? 0x01 : 0x00 ) ;
-			input.SetLeftSHIFT ( 0 < modKeyCnt[ 2 ][ 1 ] ? 0x01 : 0x00 ) ;
-			input.SetRightSHIFT( 0 < modKeyCnt[ 3 ][ 1 ] ? 0x01 : 0x00 ) ;
-			input.SetLeftALT   ( 0 < modKeyCnt[ 4 ][ 1 ] ? 0x01 : 0x00 ) ;
-			input.SetRightALT  ( 0 < modKeyCnt[ 5 ][ 1 ] ? 0x01 : 0x00 ) ;
-			input.SetLeftGUI   ( 0 < modKeyCnt[ 6 ][ 1 ] ? 0x01 : 0x00 ) ;
-			input.SetRightGUI  ( 0 < modKeyCnt[ 7 ][ 1 ] ? 0x01 : 0x00 ) ;
+			input.SetLeftCTRL  ( true == modKeySt[ 1 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetLeftSHIFT ( true == modKeySt[ 2 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetRightSHIFT( true == modKeySt[ 3 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetLeftALT   ( true == modKeySt[ 4 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetRightALT  ( true == modKeySt[ 5 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetLeftGUI   ( true == modKeySt[ 6 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetRightGUI  ( true == modKeySt[ 7 ].isPressed ? 0x01 : 0x00 ) ;
 
 			KeyPress( input ) ;
 

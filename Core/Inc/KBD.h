@@ -5,12 +5,9 @@
 #include "GPIO.h"
 
 #include "KeyPage.h"
+#include "usb_device.h"
 #include "HID_InputReport.h"
 
-
-#if ( USB_ENABLED )
-#include "usb_device.h"
-#endif
 
 namespace daniel
 {
@@ -20,10 +17,7 @@ class KBD
 
 private :
 	ADC_HandleTypeDef  * pAdcHandle ;
-
-#if ( USB_ENABLED )
 	USBD_HandleTypeDef * pUsbHandle ;
-#endif
 
 private :
 	uint32_t adcValues[ 4 ] ;
@@ -32,6 +26,15 @@ private :
 	static constexpr uint8_t const outSignal = 12 ;
 	static constexpr uint8_t const  inSignal =  8 ;
 	static constexpr uint8_t const keyCnt    = outSignal * inSignal ;
+
+	static constexpr uint8_t const keyFnPos     = 55 ;
+	static constexpr uint8_t const keyLCtrlPos  = 64 ;
+	static constexpr uint8_t const keyLShiftPos = 72 ;
+	static constexpr uint8_t const keyRShiftPos = 73 ;
+	static constexpr uint8_t const keyLAltPos   = 86 ;
+	static constexpr uint8_t const keyRAltPos   = 87 ;
+	static constexpr uint8_t const keyLGuiPos   = 94 ;
+	static constexpr uint8_t const keyRGuiPos   = 95 ;
 
 private :
 	static KeyPage const keymap[ keyCnt * 2 ] ;
@@ -42,9 +45,6 @@ private :
 	bool repeat[ keyCnt ] ;
 	bool currKeyPressed[ keyCnt ] ;
 	bool prevKeyPressed[ keyCnt ] ;
-
-	bool anyKeyPressed ;
-	bool isBlink ;
 
 
 private :
@@ -96,18 +96,11 @@ private :
 public :
 	void Run() ;
 	void SetAdcHandle( ADC_HandleTypeDef  * pHandle ) ;
-
-#if ( USB_ENABLED )
 	void SetUSBHandle( USBD_HandleTypeDef * pHandle ) ;
-#endif
 
 public :
 	KBD() ;
-	KBD( ADC_HandleTypeDef * pAdcHandle
-#if ( USB_ENABLED )
-    , USBD_HandleTypeDef * pUsbHandle
-#endif
-	) ;
+	KBD( ADC_HandleTypeDef * pAdcHandle , USBD_HandleTypeDef * pUsbHandle ) ;
 
 } ;
 
