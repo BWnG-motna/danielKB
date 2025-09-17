@@ -428,13 +428,12 @@ void daniel::KBD::Loop()
 
 		/**/ if(  true == currKeyPressed[ pos ] &&  true == prevKeyPressed[ pos ] )
 		{
-			if( false == repeat[ pos ] && ( 200 > diffTime ) )
+			/**/ if( false == repeat[ pos ] && ( 200 > diffTime ) )
 			{
 				repeat[ pos ] = true ;
 				continue ;
 			}
-
-			if(  true == repeat[ pos ] && ( 140 > diffTime ) )
+			else if(  true == repeat[ pos ] && ( 140 > diffTime ) )
 			{
 				continue ;
 			}
@@ -448,7 +447,7 @@ void daniel::KBD::Loop()
 		{
 			daniel::KeyPage k = ( 0 < modKeyCnt[ 0 ][ 1 ] ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
 
-			HID_InputReport input ;
+			HID_InputReport input( 1 ) ;
 
 			if( KeyPage::CapsLock == k ) // exception handling - it recognize pressing FN + Left CTRL
 			{
@@ -504,7 +503,7 @@ void daniel::KBD::KeyRelease( HID_InputReport const & ir )
 
 	do
 	{
-		HID_InputReport resetIR ;
+		HID_InputReport resetIR( ir.GetReportId() ) ;
 		typeDef = USBD_HID_SendReport( pUsbHandle , resetIR.GetSerialized() , resetIR.GetSerializedLength() ) ;
 
 	} while( USBD_OK != typeDef ) ;

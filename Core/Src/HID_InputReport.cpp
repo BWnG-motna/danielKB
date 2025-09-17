@@ -4,8 +4,9 @@
 uint8_t daniel::HID_InputReport::keyPos = 1 ;
 
 
-daniel::HID_InputReport::HID_InputReport()
-	: rightGUI( 0x00 ) , rightALT( 0x00 ) , rightSHIFT( 0x00 ) , rightCTRL( 0x00 ) ,  leftGUI( 0x00 ) ,  leftALT( 0x00 ) , leftSHIFT( 0x00 ) , leftCTRL( 0x00 ) ,
+daniel::HID_InputReport::HID_InputReport( uint8_t const & _reportId )
+	: reportId( _reportId ) ,
+	  rightGUI( 0x00 ) , rightALT( 0x00 ) , rightSHIFT( 0x00 ) , rightCTRL( 0x00 ) ,  leftGUI( 0x00 ) ,  leftALT( 0x00 ) , leftSHIFT( 0x00 ) , leftCTRL( 0x00 ) ,
 	  reserved( 0x00 ) , keyCode1( 0x00 ) ,   keyCode2( 0x00 ) ,  keyCode3( 0x00 ) , keyCode4( 0x00 ) , keyCode5( 0x00 ) ,  keyCode6( 0x00 )
 {
 
@@ -14,6 +15,7 @@ daniel::HID_InputReport::HID_InputReport()
 
 void daniel::HID_InputReport::Reset()
 {
+	reportId   = 0x00 ;
 	rightGUI   = 0x00 ;
 	rightALT   = 0x00 ;
 	rightSHIFT = 0x00 ;
@@ -118,6 +120,12 @@ void daniel::HID_InputReport::SetKeyCode6( uint8_t const & keyCode )
 }
 
 
+void daniel::HID_InputReport::SetReportID( uint8_t const & id )
+{
+	reportId = id ;
+}
+
+
 void daniel::HID_InputReport::SetKeyCode( uint8_t const & keyCode )
 {
 	switch( keyPos )
@@ -175,6 +183,7 @@ void daniel::HID_InputReport::SetKeyCode( uint8_t const & keyCode )
 			SetKeyCode5( 0 ) ;
 			SetKeyCode6( keyCode ) ;
 			break ;
+
 	}
 
 	++keyPos ;
@@ -188,29 +197,41 @@ void daniel::HID_InputReport::SetKeyCode( uint8_t const & keyCode )
 
 uint8_t * daniel::HID_InputReport::GetSerialized() const
 {
-	static uint8_t keyCode[ 8 ] = { 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 } ;
+	static uint8_t keyCode[ 9 ] = { 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 , 0x00 } ;
 
-	for( uint8_t pos = 0 ; pos < 8 ; ++pos )
+	for( uint8_t pos = 0 ; pos < 9 ; ++pos )
 	{
 		keyCode[ pos ] = 0x00 ;
 	}
 
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < rightGUI   ? 0x80 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < rightALT   ? 0x40 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < rightSHIFT ? 0x20 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < rightCTRL  ? 0x10 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < leftGUI    ? 0x08 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < leftALT    ? 0x04 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < leftSHIFT  ? 0x02 : 0x00 ) ;
-	keyCode[ 0 ] = keyCode[ 0 ] | ( 0 < leftCTRL   ? 0x01 : 0x00 ) ;
+	if( 0x01 == reportId )
+	{
+		keyCode[ 0 ] = reportId ;
 
-	keyCode[ 1 ] = reserved ;
-	keyCode[ 2 ] = keyCode1 ;
-	keyCode[ 3 ] = keyCode2 ;
-	keyCode[ 4 ] = keyCode3 ;
-	keyCode[ 5 ] = keyCode4 ;
-	keyCode[ 6 ] = keyCode5 ;
-	keyCode[ 7 ] = keyCode6 ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < rightGUI   ? 0x80 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < rightALT   ? 0x40 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < rightSHIFT ? 0x20 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < rightCTRL  ? 0x10 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < leftGUI    ? 0x08 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < leftALT    ? 0x04 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < leftSHIFT  ? 0x02 : 0x00 ) ;
+		keyCode[ 1 ] = keyCode[ 1 ] | ( 0 < leftCTRL   ? 0x01 : 0x00 ) ;
+
+		keyCode[ 2 ] = reserved ;
+		keyCode[ 3 ] = keyCode1 ;
+		keyCode[ 4 ] = keyCode2 ;
+		keyCode[ 5 ] = keyCode3 ;
+		keyCode[ 6 ] = keyCode4 ;
+		keyCode[ 7 ] = keyCode5 ;
+		keyCode[ 8 ] = keyCode6 ;
+	}
+	else if( 0x02 == reportId )
+	{
+		keyCode[ 0 ] = reportId ;
+		keyCode[ 1 ] = keyCode1 ;
+		keyCode[ 2 ] = keyCode2 ;
+	}
+
 
 	return keyCode ;
 }
@@ -218,7 +239,16 @@ uint8_t * daniel::HID_InputReport::GetSerialized() const
 
 uint16_t daniel::HID_InputReport::GetSerializedLength() const
 {
-	return 8 ;
+	if( 1 == reportId )
+	{
+		return 9 ;
+	}
+	else if( 2 == reportId )
+	{
+		return 3 ;
+	}
+
+	return 0 ;
 }
 
 
@@ -227,7 +257,7 @@ bool daniel::HID_InputReport::operator==( HID_InputReport const & ir )
 	uint8_t * pSelf  =    GetSerialized() ;
 	uint8_t * pOther = ir.GetSerialized() ;
 
-	for( uint8_t pos = 0 ; pos < 8 ; ++pos )
+	for( uint8_t pos = 0 ; pos < 9 ; ++pos )
 	{
 		if( pSelf[ pos ] != pOther[ pos ] )
 		{
@@ -244,7 +274,7 @@ bool daniel::HID_InputReport::operator!=( HID_InputReport const & ir )
 	uint8_t * pSelf  =    GetSerialized() ;
 	uint8_t * pOther = ir.GetSerialized() ;
 
-	for( uint8_t pos = 0 ; pos < 8 ; ++pos )
+	for( uint8_t pos = 0 ; pos < 9 ; ++pos )
 	{
 		if( pSelf[ pos ] != pOther[ pos ] )
 		{
@@ -283,5 +313,10 @@ void daniel::HID_InputReport::SetModKey( uint8_t const & modKey )
 	leftALT    = ( 0 < ( modKey & 0x04 ) ) ? 0x01 : 0x00 ;
 	leftSHIFT  = ( 0 < ( modKey & 0x02 ) ) ? 0x01 : 0x00 ;
 	leftCTRL   = ( 0 < ( modKey & 0x01 ) ) ? 0x01 : 0x00 ;
+}
 
+
+uint8_t daniel::HID_InputReport::GetReportId() const
+{
+	return reportId ;
 }

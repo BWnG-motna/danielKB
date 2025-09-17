@@ -10,6 +10,7 @@ class HID_InputReport
 {
 
 private :
+	uint8_t reportId ;
 	uint8_t rightGUI   : 1 ;
 	uint8_t rightALT   : 1 ;
 	uint8_t rightSHIFT : 1 ;
@@ -30,6 +31,7 @@ private :
 	static uint8_t keyPos ;
 
 public :
+	void SetReportID  ( uint8_t const & reportId ) ;
 	void SetRightGUI  ( bool const & isSet ) ;
 	void SetRightALT  ( bool const & isSet ) ;
 	void SetRightSHIFT( bool const & isSet ) ;
@@ -51,7 +53,8 @@ public :
 	bool operator!=( HID_InputReport const & ir ) ;
 
 public :
-	uint8_t GetModKey() const ;
+	uint8_t GetModKey()   const ;
+	uint8_t GetReportId() const ;
 	void    SetModKey( uint8_t const & modKey ) ;
 
 public :
@@ -64,7 +67,7 @@ public :
 	uint16_t GetSerializedLength() const ;
 
 public :
-	HID_InputReport()  ;
+	HID_InputReport( uint8_t const & reportId = 1 ) ;
 } ;
 
 } // namespace daniel
