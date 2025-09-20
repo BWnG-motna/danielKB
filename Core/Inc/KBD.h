@@ -41,14 +41,13 @@ private :
 
 private :
 	bool inKey[ 8 ] ;
-
-	bool repeat[ keyCnt ] ;
 	bool currKeyPressed[ keyCnt ] ;
 	bool prevKeyPressed[ keyCnt ] ;
 
 
 private :
-	uint32_t prevTime [ keyCnt ] ;
+	uint32_t prevTime[ keyCnt ] ;
+	uint8_t  repeat  [ keyCnt ] ;
 
 private :
 	GPIO gpio ;
@@ -92,6 +91,10 @@ private :
 private :
 	void KeyPress( HID_InputReport const & ir ) ;
 	void KeyRelease( HID_InputReport const & ir ) ;
+
+private :
+	bool    IsConsumerProfile( KeyPage const & keyPage ) ;
+	uint8_t GetConsumerKeyValue( KeyPage const & keyPage ) ;
 
 public :
 	void Run() ;

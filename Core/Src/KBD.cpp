@@ -309,12 +309,12 @@ void daniel::KBD::Run()
 		return ;
 	}
 
-#if ( USB_ENABLED )
+
 	if( nullptr == pUsbHandle )
 	{
 		return ;
 	}
-#endif
+
 
 	HAL_ADC_Start_DMA( pAdcHandle , ( uint32_t * ) adcValues , 4 ) ;
 	DefaultOutPut() ;
@@ -387,43 +387,42 @@ void daniel::KBD::Loop()
 
 		/**/ if( false == currKeyPressed[ pos ] && false == prevKeyPressed[ pos ] )
 		{
-			repeat[ pos ] = false ;
+			repeat[ pos ] = 0 ;
 			continue ;
 		}
 		else if( false == currKeyPressed[ pos ] &&  true == prevKeyPressed[ pos ] )
 		{
-			repeat[ pos ] = false ;
+			repeat[ pos ] = 0 ;
 		}
 
 		/**/ if(  true == currKeyPressed[ pos ] &&  true == prevKeyPressed[ pos ] )
 		{
-			/**/ if( false == repeat[ pos ] && ( 200 > diffTime ) )
+			uint16_t repeatDelay[ 4 ] = { 400 , 200 , 140 , 50 } ;
+			if( repeatDelay[ repeat[ pos ] ] > diffTime )
 			{
-				repeat[ pos ] = true ;
 				continue ;
 			}
-			else if(  true == repeat[ pos ] && ( 140 > diffTime ) )
+			else
 			{
-				continue ;
+				repeat[ pos ] += ( 3 <= repeat[ pos ] ) ? 0 : 1 ;
 			}
 		}
 
 		prevTime[ pos ] = currTime ;
 		prevKeyPressed[ pos ] = currKeyPressed[ pos ] ;
 
+		daniel::KeyPage k = ( true == modKeySt[ 0 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
+		bool isConsumer = IsConsumerProfile( k ) ;
 
-	    if( key::None != keymap[ pos ] )
+	    if( key::None != k && false == isConsumer )
 		{
-			daniel::KeyPage k = ( 0 < modKeySt[ 0 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
-
-			HID_InputReport input( 1 ) ;
-
 			if( KeyPage::CapsLock == k ) // exception handling - it recognize pressing FN + Left CTRL
 			{
 				isModKey = false ;
 				modKeySt[ 1 ].isPressed = 0 ;
 			}
 
+			HID_InputReport input( 1 ) ;
 			/**/ if( true  == isModKey && true == currKeyPressed[ pos ] )
 			{
 				input.SetKeyCode1( static_cast< uint8_t >( key::None ) ) ;
@@ -445,6 +444,23 @@ void daniel::KBD::Loop()
 
 			if( false == isModKey )
 			{
+				KeyRelease( input ) ;
+			}
+		}
+	    else if( key::None != k &&  true == isConsumer )
+		{
+			uint16_t value = GetConsumerKeyValue( k ) ;
+			uint8_t msb = static_cast< uint8_t >( ( value >> 8 ) & 0x00FF ) ;
+			uint8_t lsb = static_cast< uint8_t >( ( value >> 0 ) & 0x00FF ) ;
+
+			HID_InputReport input( 2 ) ;
+
+			if( true == currKeyPressed[ pos ] )
+			{
+				input.SetKeyCode1( lsb ) ;
+				input.SetKeyCode2( msb ) ;
+
+				KeyPress( input ) ;
 				KeyRelease( input ) ;
 			}
 		}
@@ -475,6 +491,36 @@ void daniel::KBD::KeyRelease( HID_InputReport const & ir )
 		typeDef = USBD_HID_SendReport( pUsbHandle , resetIR.GetSerialized() , resetIR.GetSerializedLength() ) ;
 
 	} while( USBD_OK != typeDef ) ;
+}
+
+
+bool daniel::KBD::IsConsumerProfile( KeyPage const & keyPage )
+{
+	if( key::VolumeUp == keyPage || key::VolumeDown == keyPage || key::Mute == keyPage )
+	{
+		return true ;
+	}
+
+	return false ;
+}
+
+
+uint8_t daniel::KBD::GetConsumerKeyValue( KeyPage const & keyPage )
+{
+	if( key::VolumeUp == keyPage )
+	{
+		return 0x00E9 ;
+	}
+	else if( key::VolumeDown == keyPage )
+	{
+		return 0x00EA ;
+	}
+	else if( key::Mute == keyPage )
+	{
+		return 0x00E2 ;
+	}
+
+	return 0 ;
 }
 
 
