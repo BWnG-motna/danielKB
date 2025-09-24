@@ -183,10 +183,15 @@ void daniel::KBD::GetIn()
 		inKey[ pos ] = false ;
 	}
 
-	GetInA() ;
-	GetInB() ;
-	GetInC() ;
-	GetInD() ;
+	void ( daniel::KBD:: * fpArr[ 4 ] )()
+		= { & daniel::KBD::GetInA , & daniel::KBD::GetInB ,
+			& daniel::KBD::GetInC , & daniel::KBD::GetInD } ;
+
+	for( uint8_t pos = 0 ; pos < 4 ; ++pos )
+	{
+		void ( daniel::KBD:: * fp )() = fpArr[ pos ] ;
+		( this->*( fp ) )() ;
+	}
 }
 
 
@@ -423,13 +428,13 @@ void daniel::KBD::Loop()
 			}
 
 			HID_InputReport input( 1 ) ;
-			/**/ if( true  == isModKey && true == currKeyPressed[ pos ] )
+			if( key::Tab == k )
 			{
-				input.SetKeyCode1( static_cast< uint8_t >( key::None ) ) ;
+				input.SetKeyCode6( static_cast< uint8_t >( ( true == currKeyPressed[ pos ] ) ? key::Tab : key::None ) ) ;
 			}
-			else if( false == isModKey && true == currKeyPressed[ pos ] )
+			else if( key::Tab != k && true == currKeyPressed[ pos ] )
 			{
-				input.SetKeyCode1( static_cast< uint8_t >( k ) ) ;
+				input.SetKeyCode1( static_cast< uint8_t >( true  == isModKey ? key::None : k ) ) ;
 			}
 
 			input.SetLeftCTRL  ( true == modKeySt[ 1 ].isPressed ? 0x01 : 0x00 ) ;
@@ -442,7 +447,7 @@ void daniel::KBD::Loop()
 
 			KeyPress( input ) ;
 
-			if( false == isModKey )
+			if( false == isModKey && key::Tab != k )
 			{
 				KeyRelease( input ) ;
 			}
