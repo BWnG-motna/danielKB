@@ -27,6 +27,7 @@ private :
 	static constexpr uint8_t const  inSignal =  8 ;
 	static constexpr uint8_t const keyCnt    = outSignal * inSignal ;
 
+	static constexpr uint8_t const keySpPos     = 47 ;
 	static constexpr uint8_t const keyFnPos     = 55 ;
 	static constexpr uint8_t const keyLCtrlPos  = 64 ;
 	static constexpr uint8_t const keyLShiftPos = 72 ;

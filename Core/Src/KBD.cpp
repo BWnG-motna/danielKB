@@ -134,13 +134,13 @@ void daniel::KBD::SetSigL( bool const & isSet )
 
 void daniel::KBD::DefaultOutPut()
 {
-	void ( daniel::KBD:: * fpArr[ 12 ] )( bool const & isSet )
+	void ( daniel::KBD:: * fpArr[ outSignal ] )( bool const & isSet )
 		= { & daniel::KBD::SetSigA , & daniel::KBD::SetSigB , & daniel::KBD::SetSigC ,
 			& daniel::KBD::SetSigD , & daniel::KBD::SetSigE , & daniel::KBD::SetSigF ,
 			& daniel::KBD::SetSigG , & daniel::KBD::SetSigH , & daniel::KBD::SetSigI ,
 			& daniel::KBD::SetSigJ , & daniel::KBD::SetSigK , & daniel::KBD::SetSigL } ;
 
-	for( uint8_t pos = 0 ; pos < 12 ; ++pos )
+	for( uint8_t pos = 0 ; pos < outSignal ; ++pos )
 	{
 		void ( daniel::KBD:: * fp )( bool const & isSet ) = fpArr[ pos ] ;
 		( this->*( fp ) )( false ) ;
@@ -150,18 +150,18 @@ void daniel::KBD::DefaultOutPut()
 
 void daniel::KBD::SetOut( uint8_t const & outNo )
 {
-	void ( daniel::KBD:: * fpArr[ 12 ] )( bool const & isSet )
+	void ( daniel::KBD:: * fpArr[ outSignal ] )( bool const & isSet )
 	    = { & daniel::KBD::SetSigA , & daniel::KBD::SetSigB , & daniel::KBD::SetSigC ,
 			& daniel::KBD::SetSigD , & daniel::KBD::SetSigE , & daniel::KBD::SetSigF ,
 			& daniel::KBD::SetSigG , & daniel::KBD::SetSigH , & daniel::KBD::SetSigI ,
 			& daniel::KBD::SetSigJ , & daniel::KBD::SetSigK , & daniel::KBD::SetSigL } ;
 
-	if( 12 <= outNo )
+	if( outSignal <= outNo )
 	{
 		return ;
 	}
 
-	for( uint8_t pos = 0 ; pos < 12 ; ++pos )
+	for( uint8_t pos = 0 ; pos < outSignal ; ++pos )
 	{
 		void ( daniel::KBD:: * fp )( bool const & isSet ) = fpArr[ pos ] ;
 		if( pos == outNo )
@@ -178,7 +178,7 @@ void daniel::KBD::SetOut( uint8_t const & outNo )
 
 void daniel::KBD::GetIn()
 {
-	for( uint8_t pos = 0 ; pos < 8 ; ++pos )
+	for( uint8_t pos = 0 ; pos < inSignal ; ++pos )
 	{
 		inKey[ pos ] = false ;
 	}
@@ -353,11 +353,12 @@ void daniel::KBD::Loop()
 
 	} KeyStatus ;
 
-	KeyStatus modKeySt[ 8 ] = {
-		{     keyFnPos , 0 } , {  keyLCtrlPos , 0 } ,
-		{ keyLShiftPos , 0 } , { keyRShiftPos , 0 } ,
-		{   keyLAltPos , 0 } , {   keyRAltPos , 0 } ,
-		{   keyLGuiPos , 0 } , {   keyRGuiPos , 0 }
+	KeyStatus modKeySt[ 9 ] = {
+		{     keySpPos , false } , {     keyFnPos , false } ,
+		{  keyLCtrlPos , false } , { keyLShiftPos , false } ,
+		{ keyRShiftPos , false } , {   keyLAltPos , false } ,
+		{   keyRAltPos , false } , {   keyLGuiPos , false } ,
+		{   keyRGuiPos , false }
 	} ;
 
 	bool isRegKeyPressed = false ;
@@ -369,7 +370,7 @@ void daniel::KBD::Loop()
 
 		for( uint8_t inPos = 0 ; inPos < inSignal ; ++inPos )
 		{
-			uint8_t idx = outPos * 8 + inPos ;
+			uint8_t idx = outPos * inSignal + inPos ;
 			currKeyPressed[ idx ] = inKey[ inPos ] ;
 
 			if( modKeySt[ pivotPos ].keyPos != idx && true == inKey[ inPos ] )
@@ -377,9 +378,9 @@ void daniel::KBD::Loop()
 				isRegKeyPressed= true ;
 			}
 
-			if( 7 >= pivotPos && modKeySt[ pivotPos ].keyPos == idx )
+			if( 9 > pivotPos && modKeySt[ pivotPos ].keyPos == idx )
 			{
-				if( 0 != pivotPos && true == inKey[ inPos ] )
+				if( 1 < pivotPos && true == inKey[ inPos ] )
 				{
 					isModKeyPressed = true ;
 				}
@@ -400,7 +401,7 @@ void daniel::KBD::Loop()
 		uint32_t diffTime = currTime - prevTime[ pos ] ;
 
 		bool isModKey = false ;
-		if( 7 >= pivotPos && modKeySt[ pivotPos ].keyPos == pos )
+		if( 9 > pivotPos && modKeySt[ pivotPos ].keyPos == pos )
 		{
 			isModKey = true ;
 			++pivotPos ;
@@ -432,7 +433,7 @@ void daniel::KBD::Loop()
 		prevTime[ pos ] = currTime ;
 		prevKeyPressed[ pos ] = currKeyPressed[ pos ] ;
 
-		daniel::KeyPage k = ( true == modKeySt[ 0 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
+		daniel::KeyPage k = ( true == modKeySt[ 1 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
 		bool isConsumer = IsConsumerProfile( k ) ;
 
 	    if( key::None != k && false == isConsumer )
@@ -454,13 +455,13 @@ void daniel::KBD::Loop()
 				input.SetKeyCode1( static_cast< uint8_t >( true  == isModKey ? key::None : k ) ) ;
 			}
 
-			input.SetLeftCTRL  ( true == modKeySt[ 1 ].isPressed ? 0x01 : 0x00 ) ;
-			input.SetLeftSHIFT ( true == modKeySt[ 2 ].isPressed ? 0x01 : 0x00 ) ;
-			input.SetRightSHIFT( true == modKeySt[ 3 ].isPressed ? 0x01 : 0x00 ) ;
-			input.SetLeftALT   ( true == modKeySt[ 4 ].isPressed ? 0x01 : 0x00 ) ;
-			input.SetRightALT  ( true == modKeySt[ 5 ].isPressed ? 0x01 : 0x00 ) ;
-			input.SetLeftGUI   ( true == modKeySt[ 6 ].isPressed ? 0x01 : 0x00 ) ;
-			input.SetRightGUI  ( true == modKeySt[ 7 ].isPressed ? 0x01 : 0x00 ) ;
+			input.SetLeftCTRL  ( true == modKeySt[ 2 ].isPressed ? true : false ) ;
+			input.SetLeftSHIFT ( true == modKeySt[ 3 ].isPressed ? true : false ) ;
+			input.SetRightSHIFT( true == modKeySt[ 4 ].isPressed ? true : false ) ;
+			input.SetLeftALT   ( true == modKeySt[ 5 ].isPressed ? true : false ) ;
+			input.SetRightALT  ( true == modKeySt[ 6 ].isPressed ? true : false ) ;
+			input.SetLeftGUI   ( true == modKeySt[ 7 ].isPressed ? true : false ) ;
+			input.SetRightGUI  ( true == modKeySt[ 8 ].isPressed ? true : false ) ;
 
 			KeyPress( input ) ;
 
@@ -490,6 +491,44 @@ void daniel::KBD::Loop()
 				gpio.SetDbgLed3( false ) ;
 			}
 		}
+	    else if( keySpPos == pos )
+	    {
+	    	if( false == modKeySt[ 0 ].isPressed || false == modKeySt[ 1 ].isPressed )
+	    	{
+	    		continue ;
+	    	}
+
+	    	volatile uint32_t const countAddr = 0x08010000 ;
+	    	volatile uint32_t const  passAddr = 0x08010001 ;
+	    	volatile uint8_t  const passCount = ( * ( __IO uint8_t * ) countAddr ) ;
+
+	    	if( 0x00 == passCount || 0xFF == passCount )
+	    	{
+	    		continue ;
+	    	}
+
+	    	for( uint8_t passPos = 0 ; passPos < passCount ; ++passPos )
+	    	{
+	    		volatile uint8_t const modKey = ( * ( __IO uint8_t * ) passAddr + ( passPos * 2 ) + 0 ) ;
+	    		volatile uint8_t const reqKey = ( * ( __IO uint8_t * ) passAddr + ( passPos * 2 ) + 1 ) ;
+
+	    		HID_InputReport input( 1 ) ;
+
+	    		input.SetLeftCTRL  ( ( 0 < ( modKey & 0x40 ) ) ? true : false ) ;
+				input.SetLeftSHIFT ( ( 0 < ( modKey & 0x20 ) ) ? true : false ) ;
+				input.SetRightSHIFT( ( 0 < ( modKey & 0x10 ) ) ? true : false ) ;
+				input.SetLeftALT   ( ( 0 < ( modKey & 0x08 ) ) ? true : false ) ;
+				input.SetRightALT  ( ( 0 < ( modKey & 0x04 ) ) ? true : false ) ;
+				input.SetLeftGUI   ( ( 0 < ( modKey & 0x02 ) ) ? true : false ) ;
+				input.SetRightGUI  ( ( 0 < ( modKey & 0x01 ) ) ? true : false ) ;
+
+				uint8_t const key = reqKey ;
+				input.SetKeyCode1( key ) ;
+
+				KeyPress( input ) ;
+				KeyRelease( input ) ;
+	    	}
+	    }
 	}
 }
 
