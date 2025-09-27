@@ -333,7 +333,7 @@ void daniel::KBD::Run()
 		prevTime[ pos ] = 0 ;
 	}
 
-	gpio.SetDbgLed1( true  ) ;
+	gpio.SetDbgLed1( false ) ;
 	gpio.SetDbgLed2( false ) ;
 	gpio.SetDbgLed3( false ) ;
 
@@ -360,6 +360,8 @@ void daniel::KBD::Loop()
 		{   keyLGuiPos , 0 } , {   keyRGuiPos , 0 }
 	} ;
 
+	bool isRegKeyPressed = false ;
+	bool isModKeyPressed = false ;
 	for( uint8_t outPos = 0 , pivotPos  = 0 ; outPos < outSignal ; ++outPos )
 	{
 		SetOut( outPos ) ;
@@ -370,12 +372,26 @@ void daniel::KBD::Loop()
 			uint8_t idx = outPos * 8 + inPos ;
 			currKeyPressed[ idx ] = inKey[ inPos ] ;
 
+			if( modKeySt[ pivotPos ].keyPos != idx && true == inKey[ inPos ] )
+			{
+				isRegKeyPressed= true ;
+			}
+
 			if( 7 >= pivotPos && modKeySt[ pivotPos ].keyPos == idx )
 			{
+				if( 0 != pivotPos && true == inKey[ inPos ] )
+				{
+					isModKeyPressed = true ;
+				}
+
 				modKeySt[ pivotPos++ ].isPressed = inKey[ inPos ] ;
 			}
 		}
 	}
+
+
+	gpio.SetDbgLed1( isRegKeyPressed ) ;
+	gpio.SetDbgLed2( isModKeyPressed ) ;
 
 
 	for( uint8_t pos = 0 , pivotPos = 0 ; pos < keyCnt ; ++pos )
@@ -428,6 +444,7 @@ void daniel::KBD::Loop()
 			}
 
 			HID_InputReport input( 1 ) ;
+
 			if( key::Tab == k )
 			{
 				input.SetKeyCode6( static_cast< uint8_t >( ( true == currKeyPressed[ pos ] ) ? key::Tab : key::None ) ) ;
@@ -462,11 +479,15 @@ void daniel::KBD::Loop()
 
 			if( true == currKeyPressed[ pos ] )
 			{
+				gpio.SetDbgLed3( true ) ;
+
 				input.SetKeyCode1( lsb ) ;
 				input.SetKeyCode2( msb ) ;
 
 				KeyPress( input ) ;
 				KeyRelease( input ) ;
+
+				gpio.SetDbgLed3( false ) ;
 			}
 		}
 	}
