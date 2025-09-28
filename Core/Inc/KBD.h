@@ -12,6 +12,9 @@
 namespace daniel
 {
 
+using KeyPage = daniel::HID::DesktopProfile::KeyPage ;
+
+
 class KBD
 {
 
@@ -94,8 +97,8 @@ private :
 	void KeyRelease( HID_InputReport const & ir ) ;
 
 private :
-	bool    IsConsumerProfile( KeyPage const & keyPage ) ;
-	uint8_t GetConsumerKeyValue( KeyPage const & keyPage ) ;
+	bool     IsConsumerProfile( KeyPage const & keyPage ) ;
+	uint16_t GetConsumerKeyValue( KeyPage const & keyPage ) ;
 
 public :
 	void Run() ;

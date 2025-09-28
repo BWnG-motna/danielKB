@@ -2,7 +2,9 @@
 #include "usbd_hid.h"
 #include "HID_InputReport.h"
 
-using key = daniel::KeyPage ;
+
+using key = daniel::HID::DesktopProfile::KeyPage ;
+
 
 daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 
@@ -569,22 +571,30 @@ bool daniel::KBD::IsConsumerProfile( KeyPage const & keyPage )
 }
 
 
-uint8_t daniel::KBD::GetConsumerKeyValue( KeyPage const & keyPage )
+uint16_t daniel::KBD::GetConsumerKeyValue( KeyPage const & keyPage )
 {
+	using ckey = daniel::HID::ConsumerProfile::KeyPage ;
+
+	ckey k = ckey::None ;
+
 	if( key::VolumeUp == keyPage )
 	{
-		return 0x00E9 ;
+		k = ckey::VolumeIncrement ;
 	}
 	else if( key::VolumeDown == keyPage )
 	{
-		return 0x00EA ;
+		k = ckey::VolumeDecrement ;
 	}
 	else if( key::Mute == keyPage )
 	{
-		return 0x00E2 ;
+		k = ckey::Mute ;
+	}
+	else
+	{
+		k = ckey::None ;
 	}
 
-	return 0 ;
+	return static_cast< uint16_t >( k ) ;
 }
 
 

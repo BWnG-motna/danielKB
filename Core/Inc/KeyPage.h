@@ -5,6 +5,11 @@
 namespace daniel
 {
 
+namespace HID
+{
+
+namespace DesktopProfile
+{
 
 enum class KeyPage : uint8_t
 {
@@ -255,8 +260,272 @@ enum class KeyPage : uint8_t
 	RightSHIFT        = 0xE5 ,
 	RightALT          = 0xE6 ,
 	RightGUI          = 0xE7 ,
-} ;
 
+} ; // enum class KeyPage
+
+} // namespace DekstopProfile
+
+namespace ConsumerProfile
+{
+
+enum class KeyPage : uint16_t
+{
+	None                                   = 0x0000 ,
+	ConsumerControl                        = 0x0001 ,
+	NumericKeyPad                          = 0x0002 ,
+	ProgrammableButtons                    = 0x0003 ,
+	Microphone                             = 0x0004 ,
+	HeadPhone                              = 0x0005 ,
+	GraphicEqualizer                       = 0x0006 ,
+
+	Plus10                                 = 0x0020 ,
+	Plus100                                = 0x0021 ,
+	AM_PM                                  = 0x0022 ,
+	Power                                  = 0x0030 ,
+	Reset                                  = 0x0031 ,
+	Sleep                                  = 0x0032 ,
+	SleepAfter                             = 0x0033 ,
+	SleepMode                              = 0x0034 ,
+	Illumination                           = 0x0035 ,
+	FunctionButtons                        = 0x0036 ,
+
+	Menu                                   = 0x0040 ,
+	MenuPick                               = 0x0041 ,
+	MenuUp                                 = 0x0042 ,
+	MenuDown                               = 0x0043 ,
+	MenuLeft                               = 0x0044 ,
+	MenuRight                              = 0x0045 ,
+	MenuEscape                             = 0x0046 ,
+	MenuValueIncrease                      = 0x0047 ,
+	MenuValueDecrease                      = 0x0048 ,
+
+	DataOnScreen                           = 0x0060 ,
+	ClosedCaption                          = 0x0061 ,
+	ClosedCaptionSelect                    = 0x0062 ,
+	VCR_TV                                 = 0x0063 ,
+	BroadcastMode                          = 0x0064 ,
+	Snapshot                               = 0x0065 ,
+	Still                                  = 0x0066 ,
+	Picture_in_Picture_Toggle              = 0x0067 ,
+	Pciture_in_Picture_Swap                = 0x0068 ,
+
+	RedMenuButton                          = 0x0069 ,
+	GreenMenuButton                        = 0x006A ,
+	BlueMenuButton                         = 0x006B ,
+	YellowMenuButton                       = 0x006C ,
+
+	Aspect                                 = 0x006D ,
+	ThreeDModeSelect                       = 0x006E ,
+
+	DisplayBrightnessIncrement             = 0x006F ,
+	DisplayBrightnessDecrement             = 0x0070 ,
+	DisplayBritness                        = 0x0071 ,
+	DisplayBacklightToggle                 = 0x0072 ,
+	DisplaySetBrightnessToMinimum          = 0x0073 ,
+	DisplaySetBrightnessToMaximum          = 0x0074 ,
+	DisplaySetAutoBrightness               = 0x0075 ,
+
+	CameraAccessEnabled                    = 0x0076 ,
+	CameraAccessDisabled                   = 0x0077 ,
+	CameraAccessToggle                     = 0x0078 ,
+
+	KeyboardBrightnessIncrement            = 0x0079 ,
+	KeyboardBrightnessDecrement            = 0x007A ,
+	KeyboardBacklightSetLevel              = 0x007B ,
+	KeyboardBacklightOOC                   = 0x007C ,
+	KeyboardBacklightSetMinimum            = 0x007D ,
+	KeyboardBacklightSetMaximum            = 0x007E ,
+	KeyboardBacklightAuto                  = 0x007F ,
+
+	Selection                              = 0x0080 ,
+	AssignSelection                        = 0x0081 ,
+	ModeStep                               = 0x0082 ,
+	RecallLast                             = 0x0083 ,
+	EnterChannel                           = 0x0084 ,
+	OrderMovie                             = 0x0085 ,
+	Channel                                = 0x0086 ,
+
+	MediaSelection                         = 0x0087 ,
+	MediaSelectComputer                    = 0x0088 ,
+	MediaSelectTV                          = 0x0089 ,
+	MediaSelectWWW                         = 0x008A ,
+	MediaSelectDVD                         = 0x008B ,
+	MediaSelectTelephone                   = 0x008C ,
+	MediaSelectProgramGuide                = 0x008D ,
+	MediaSelectVideoPhone                  = 0x008E ,
+	MediaSelectGames                       = 0x008F ,
+	MediaSelectMessages                    = 0x0090 ,
+	MediaSelectCD                          = 0x0091 ,
+	MediaSelectVCR                         = 0x0092 ,
+	MediaSelectTuner                       = 0x0093 ,
+	Quit                                   = 0x0094 ,
+	Help                                   = 0x0095 ,
+	MediaSelectTape                        = 0x0096 ,
+	MediaSelectCable                       = 0x0097 ,
+	MediaSelectSatellite                   = 0x0098 ,
+	MediaSelectSecurity                    = 0x0099 ,
+	MediaSelectHome                        = 0x009A ,
+	MediaSelectCall                        = 0x009B ,
+	ChannelIncrement                       = 0x009C ,
+	ChannelDecrement                       = 0x009D ,
+	MediaSelectSAP                         = 0x009E ,
+
+	VCRPlus                                = 0x00A0 ,
+	Once                                   = 0x00A1 ,
+	Daily                                  = 0x00A2 ,
+	Weekly                                 = 0x00A3 ,
+	Monthly                                = 0x00A4 ,
+
+	Play                                   = 0x00B0 ,
+	Pause                                  = 0x00B1 ,
+	Record                                 = 0x00B2 ,
+	FastForward                            = 0x00B3 ,
+	Rewind                                 = 0x00B4 ,
+	ScanNextTrack                          = 0x00B5 ,
+	ScanPreviousTrack                      = 0x00B6 ,
+	Stop                                   = 0x00B7 ,
+	Eject                                  = 0x00B8 ,
+	RandomPlay                             = 0x00B9 ,
+
+	SelectDisc                             = 0x00BA ,
+	EnterDisc                              = 0x00BB ,
+	Repeat                                 = 0x00BC ,
+	Tracking                               = 0x00BD ,
+	TrackNormal                            = 0x00BE ,
+	SlowTracking                           = 0x00BF ,
+
+	FrameForward                           = 0x00C0 ,
+	FrameBack                              = 0x00C1 ,
+	Mark                                   = 0x00C2 ,
+	ClearMark                              = 0x00C3 ,
+	RepeatFromMark                         = 0x00C4 ,
+	ReturnToMark                           = 0x00C5 ,
+	SearchMarkForward                      = 0x00C6 ,
+	SearchMarkBackwards                    = 0x00C7 ,
+	CounterReset                           = 0x00C8 ,
+	ShowCounter                            = 0x00C9 ,
+	TrackingIncrement                      = 0x00CA ,
+	TrackingDecrement                      = 0x00CB ,
+	Stop_Eject                             = 0x00CC ,
+	Play_Pause                             = 0x00CD ,
+	Play_Skip                              = 0x00CE ,
+	VoiceControl                           = 0x00CF ,
+
+	InvokeCaptureInterface                 = 0x00D0 ,
+	StartOrStopGameRecording               = 0x00D1 ,
+	HistoricalGameCapture                  = 0x00D2 ,
+	CaptureGameScreenshot                  = 0x00D3 ,
+	ShowOrHideRecordingIndicator           = 0x00D4 ,
+	StartOrStopMicrophoneCapture           = 0x00D5 ,
+	StartOrStopCameraCapture               = 0x00D6 ,
+	StartOrStopGameBroadcast               = 0x00D7 ,
+	StartOrStopVoiceDictationSession       = 0x00D8 ,
+	Invoke_DismissEmojiPicker              = 0x00D9 ,
+
+	Volume                                 = 0x00E0 ,
+	Balance                                = 0x00E1 ,
+	Mute                                   = 0x00E2 ,
+	Bass                                   = 0x00E3 ,
+	Treble                                 = 0x00E4 ,
+	BassBoost                              = 0x00E5 ,
+	SurroundMode                           = 0x00E6 ,
+	Loudness                               = 0x00E7 ,
+	MPX                                    = 0x00E8 ,
+	VolumeIncrement                        = 0x00E9 ,
+	VolumeDecrement                        = 0x00EA ,
+
+	SpeedSelect                            = 0x00F0 ,
+	PlaybackSpeed                          = 0x00F1 ,
+	StandardPlay                           = 0x00F2 ,
+	LongPlay                               = 0x00F3 ,
+	ExtendedPlay                           = 0x00F4 ,
+	Slow                                   = 0x00F5 ,
+
+	FanEanble                              = 0x0100 ,
+	FanSpeed                               = 0x0101 ,
+	LightEnable                            = 0x0102 ,
+	LightIlluminationLevel                 = 0x0103 ,
+	ClimateControlEnable                   = 0x0104 ,
+	RoomTemperature                        = 0x0105 ,
+	SecurityEnable                         = 0x0106 ,
+	FireAlarm                              = 0x0107 ,
+	PoliceAlarm                            = 0x0108 ,
+	Proximity                              = 0x0109 ,
+	Motion                                 = 0x010A ,
+	DuressAlarm                            = 0x010B ,
+	HoldupAlarm                            = 0x010C ,
+	MedicalAlarm                           = 0x010D ,
+
+	BalanceRight                           = 0x0150 ,
+	BalanceLeft                            = 0x0151 ,
+	BassIncrement                          = 0x0152 ,
+	BassDecrement                          = 0x0153 ,
+	TrebleIncrement                        = 0x0154 ,
+	TrebleDecrement                        = 0x0155 ,
+
+	SpeakerSystem                          = 0x0160 ,
+	ChannelLeft                            = 0x0161 ,
+	ChannelRight                           = 0x0162 ,
+	ChannelCenter                          = 0x0163 ,
+	ChannelFront                           = 0x0164 ,
+	ChannelCenterFront                     = 0x0165 ,
+	ChannelSide                            = 0x0166 ,
+	ChannelSurround                        = 0x0167 ,
+	ChannelLowFrequencyEnhancement         = 0x0168 ,
+	ChannelTop                             = 0x0169 ,
+	ChannelUnknown                         = 0x016A ,
+
+	// ...
+	// ...
+
+	ExtendedKeyboardAttributesCollection   = 0x02C0 ,
+	KeyboardFormFactor                     = 0x02C1 ,
+	KeyboardKeyType                        = 0x02C2 ,
+	KeyboardPhysicalLayout                 = 0x02C3 ,
+	VendorSpecificKeyboardPhysicalLayout   = 0x02C4 ,
+	KeyboardIETFLanguageTagIndex           = 0x02C5 ,
+	ImplementedKeyboardInputAssistControl  = 0x02C6 ,
+	KeyboardInputAssistPrevious            = 0x02C7 ,
+	KeyboardInputAssistNext                = 0x02C8 ,
+	KeyboardInputAssistPreviousGroup       = 0x02C9 ,
+	KeyboardInputAssistNextGroup           = 0x02CA ,
+	KeyboardInputAssistAccept              = 0x02CB ,
+	KeyboardInputAssistCancel              = 0x02CC ,
+
+	PrivacyScreenToggle                    = 0x02D0 ,
+	PrivacyScreenLevelDecrement            = 0x02D1 ,
+	PrivacyScreenLevelIncrement            = 0x02D2 ,
+	PrivacyScreenLevelMinimum              = 0x02D3 ,
+	PrivacyScreenLevelMaximum              = 0x02D4 ,
+
+	ContactEdited                          = 0x0500 ,
+	ContactAdded                           = 0x0501 ,
+	ContactRecordActive                    = 0x0502 ,
+	ContactIndex                           = 0x0503 ,
+	ContactNickname                        = 0x0504 ,
+	ContactFirstName                       = 0x0505 ,
+	ContactLastName                        = 0x0506 ,
+	ContactFullName                        = 0x0507 ,
+	ContactPhoneNumberPersonal             = 0x0508 ,
+	ContactPhoneNumberBusiness             = 0x0509 ,
+	ContactPhoneNumberMobile               = 0x050A ,
+	ContactPhoneNumberPager                = 0x050B ,
+	ContactPhoneNumberFax                  = 0x050C ,
+	ContactPhoneNumberOther                = 0x050D ,
+	ContactEmailPersonal                   = 0x050E ,
+	ContactEmailBusiness                   = 0x050F ,
+	ContactEmailOther                      = 0x0510 ,
+	ContactEmailMain                       = 0x0511 ,
+	ContactSpeedDialNumber                 = 0x0512 ,
+	ContactStatusFlag                      = 0x0513 ,
+	ContactMisc                            = 0x0514 ,
+
+
+} ; // enum class KeyPage
+
+} // namespace ConsumerProfile
+
+} // namespace HID
 
 } // namespace daniel
 
