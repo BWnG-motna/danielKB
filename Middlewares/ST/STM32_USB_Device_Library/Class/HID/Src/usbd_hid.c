@@ -545,6 +545,7 @@ USBD_StatusTypeDef USBD_HID_SendReport(USBD_HandleTypeDef * pdev , uint8_t * rep
 
 	hhid->state = HID_BUSY ;
 	typeDef = USBD_LL_Transmit( pdev , HID_EPIN_ADDR , report , len ) ;
+
 	return typeDef ;
 }
 
