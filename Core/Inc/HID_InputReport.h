@@ -27,6 +27,9 @@ private :
 	uint8_t keyCode5 ;
 	uint8_t keyCode6 ;
 
+private :
+	static uint8_t keyPos ;
+
 public :
 	void SetReportID  ( uint8_t const & reportId ) ;
 	void SetRightGUI  ( bool const & isSet ) ;
@@ -43,6 +46,7 @@ public :
 	void SetKeyCode4  ( uint8_t const & keyCode ) ;
 	void SetKeyCode5  ( uint8_t const & keyCode ) ;
 	void SetKeyCode6  ( uint8_t const & keyCode ) ;
+	void SetKeyCode   ( uint8_t const & keyCode ) ;
 
 public :
 	uint8_t GetModKey()   const ;

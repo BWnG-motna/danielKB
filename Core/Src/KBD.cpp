@@ -509,12 +509,12 @@ void daniel::KBD::Loop()
 	    		continue ;
 	    	}
 
+	    	HID_InputReport input( 1 ) ;
+
 	    	for( uint8_t passPos = 0 ; passPos < passCount ; ++passPos )
 	    	{
 	    		volatile uint8_t const modKey = ( * ( __IO uint8_t * ) ( passAddr + ( passPos * 2 ) + 0 ) ) ;
 	    		volatile uint8_t const reqKey = ( * ( __IO uint8_t * ) ( passAddr + ( passPos * 2 ) + 1 ) ) ;
-
-	    		HID_InputReport input( 1 ) ;
 
 	    		input.SetLeftCTRL  ( ( 0 < ( modKey & 0x40 ) ) ? true : false ) ;
 				input.SetLeftSHIFT ( ( 0 < ( modKey & 0x20 ) ) ? true : false ) ;
@@ -524,10 +524,9 @@ void daniel::KBD::Loop()
 				input.SetLeftGUI   ( ( 0 < ( modKey & 0x02 ) ) ? true : false ) ;
 				input.SetRightGUI  ( ( 0 < ( modKey & 0x01 ) ) ? true : false ) ;
 
-				input.SetKeyCode1( reinterpret_cast< uint8_t const >( reqKey ) ) ;
+				input.SetKeyCode( reinterpret_cast< uint8_t const >( reqKey ) ) ;
 
 				KeyPress( input ) ;
-				KeyRelease( input ) ;
 	    	}
 	    }
 	}

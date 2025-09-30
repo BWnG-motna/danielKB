@@ -1,6 +1,10 @@
 #include "HID_InputReport.h"
 
 
+uint8_t daniel::HID_InputReport::keyPos = 1 ;
+
+
+
 daniel::HID_InputReport::HID_InputReport( uint8_t const & _reportId )
 	: reportId( _reportId ) ,
 	  rightGUI( 0x00 ) , rightALT( 0x00 ) , rightSHIFT( 0x00 ) , rightCTRL( 0x00 ) ,  leftGUI( 0x00 ) ,  leftALT( 0x00 ) , leftSHIFT( 0x00 ) , leftCTRL( 0x00 ) ,
@@ -114,6 +118,75 @@ void daniel::HID_InputReport::SetKeyCode5( uint8_t const & keyCode )
 void daniel::HID_InputReport::SetKeyCode6( uint8_t const & keyCode )
 {
 	keyCode6 = keyCode ;
+}
+
+
+void daniel::HID_InputReport::SetKeyCode( uint8_t const & keyCode )
+{
+	switch( keyPos )
+	{
+		case 1 :
+			SetKeyCode1( keyCode ) ;
+			SetKeyCode2( 0 ) ;
+			SetKeyCode3( 0 ) ;
+			SetKeyCode4( 0 ) ;
+			SetKeyCode5( 0 ) ;
+			SetKeyCode6( 0 ) ;
+			break ;
+
+		case 2 :
+			SetKeyCode1( 0 ) ;
+			SetKeyCode2( keyCode ) ;
+			SetKeyCode3( 0 ) ;
+			SetKeyCode4( 0 ) ;
+			SetKeyCode5( 0 ) ;
+			SetKeyCode6( 0 ) ;
+			break ;
+
+		case 3 :
+			SetKeyCode1( 0 ) ;
+			SetKeyCode2( 0 ) ;
+			SetKeyCode3( keyCode ) ;
+			SetKeyCode4( 0 ) ;
+			SetKeyCode5( 0 ) ;
+			SetKeyCode6( 0 ) ;
+			break ;
+
+		case 4 :
+			SetKeyCode1( 0 ) ;
+			SetKeyCode2( 0 ) ;
+			SetKeyCode3( 0 ) ;
+			SetKeyCode4( keyCode ) ;
+			SetKeyCode5( 0 ) ;
+			SetKeyCode6( 0 ) ;
+			break ;
+
+		case 5 :
+			SetKeyCode1( 0 ) ;
+			SetKeyCode2( 0 ) ;
+			SetKeyCode3( 0 ) ;
+			SetKeyCode4( 0 ) ;
+			SetKeyCode5( keyCode ) ;
+			SetKeyCode6( 0 ) ;
+			break ;
+
+		case 6 :
+			SetKeyCode1( 0 ) ;
+			SetKeyCode2( 0 ) ;
+			SetKeyCode3( 0 ) ;
+			SetKeyCode4( 0 ) ;
+			SetKeyCode5( 0 ) ;
+			SetKeyCode6( keyCode ) ;
+			break ;
+
+	}
+
+	++keyPos ;
+
+	if( 6 < keyPos )
+	{
+		keyPos = 1 ;
+	}
 }
 
 
