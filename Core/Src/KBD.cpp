@@ -527,7 +527,7 @@ void daniel::KBD::Loop()
 				input.SetKeyCode( reinterpret_cast< uint8_t const >( reqKey ) ) ;
 
 				KeyPress( input ) ;
-				HAL_Delay( 10 ) ; // HID_FS_BINTERVAL 0x0A ( polling interval is 10ms )
+				HAL_Delay( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 	    	}
 	    }
 	}

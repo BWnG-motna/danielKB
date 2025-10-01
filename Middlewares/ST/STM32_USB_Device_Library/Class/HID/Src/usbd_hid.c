@@ -214,7 +214,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgHSDesc[ USB_HID_CONFIG_DESC_SIZ ]  __AL
 	0x03 ,                                    /* bmAttributes: Interrupt endpoint */
 	LOBYTE( HID_EPIN_SIZE ) ,                 /* wMaxPacketSize: 8 Byte max */
 	HIBYTE( HID_EPIN_SIZE ) ,
-	HID_FS_BINTERVAL                          /* bInterval: Polling Interval */
+	HID_HS_BINTERVAL                          /* bInterval: Polling Interval */
 } ;
 
 /* USB HID device Other Speed Configuration Descriptor */
