@@ -1,3 +1,11 @@
+/*
+ * KBD.cpp
+ *
+ *  Created on: Feb 24, 2025
+ *      Author: Daniel Lee
+ */
+
+
 #include "KBD.h"
 #include "usbd_hid.h"
 #include "HID_InputReport.h"
@@ -596,13 +604,3 @@ uint16_t daniel::KBD::GetConsumerKeyValue( KeyPage const & keyPage )
 
 	return static_cast< uint16_t >( k ) ;
 }
-
-
-extern uint32_t millisec ;
-
-
-uint32_t millis()
-{
-	return millisec ;
-}
-

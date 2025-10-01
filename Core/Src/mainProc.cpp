@@ -13,8 +13,8 @@
 #include "usbd_hid.h"
 
 
-extern ADC_HandleTypeDef hadc1 ;
-extern TIM_HandleTypeDef htim7 ;
+extern ADC_HandleTypeDef  hadc1 ;
+extern TIM_HandleTypeDef  htim7 ;
 extern USBD_HandleTypeDef hUsbDeviceFS ;
 
 

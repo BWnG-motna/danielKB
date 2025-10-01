@@ -1,3 +1,10 @@
+/*
+ * KBD.h
+ *
+ *  Created on: Feb 24, 2025
+ *      Author: Daniel Lee
+ */
+
 #pragma once
 
 
@@ -109,7 +116,8 @@ public :
 	KBD() ;
 	KBD( ADC_HandleTypeDef * pAdcHandle , USBD_HandleTypeDef * pUsbHandle ) ;
 
-} ;
+
+} ; // class KBD
 
 
 } // namespace daniel

@@ -1,3 +1,10 @@
+/*
+ * HID_InputReport.h
+ *
+ *  Created on: Feb 24, 2025
+ *      Author: Daniel Lee
+ */
+
 #pragma once
 
 #include "common.h"
@@ -64,6 +71,7 @@ public :
 
 public :
 	HID_InputReport( uint8_t const & reportId = 1 ) ;
-} ;
+
+} ; // class HID_InputReport
 
 } // namespace daniel
