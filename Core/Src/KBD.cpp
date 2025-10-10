@@ -365,14 +365,15 @@ void daniel::KBD::Loop()
 
 	KeyStatus modKeySt[ 9 ] = {
 		{     keySpPos , false } , {     keyFnPos , false } ,
-		{  keyLCtrlPos , false } , { keyLShiftPos , false } ,
-		{ keyRShiftPos , false } , {   keyLAltPos , false } ,
-		{   keyRAltPos , false } , {   keyLGuiPos , false } ,
-		{   keyRGuiPos , false }
+		{  keyLCtrlPos , false } ,
+		{ keyLShiftPos , false } , { keyRShiftPos , false } ,
+		{   keyLAltPos , false } , {   keyRAltPos , false } ,
+		{   keyLGuiPos , false } , {   keyRGuiPos , false }
 	} ;
 
 	bool isRegKeyPressed = false ;
 	bool isModKeyPressed = false ;
+
 	for( uint8_t outPos = 0 , pivotPos  = 0 ; outPos < outSignal ; ++outPos )
 	{
 		SetOut( outPos ) ;

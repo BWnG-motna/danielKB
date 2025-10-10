@@ -111,9 +111,9 @@ static uint8_t   USBD_HID_DataIn( USBD_HandleTypeDef * pdev , uint8_t epnum ) ;
 
 USBD_ClassTypeDef  USBD_HID =
 {
-  USBD_HID_Init ,
+  USBD_HID_Init   ,
   USBD_HID_DeInit ,
-  USBD_HID_Setup ,
+  USBD_HID_Setup  ,
   NULL ,            /* EP0_TxSent  */
   NULL ,            /* EP0_RxReady */
   USBD_HID_DataIn , /* DataIn      */
@@ -530,8 +530,8 @@ static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef 
   */
 USBD_StatusTypeDef USBD_HID_SendReport(USBD_HandleTypeDef * pdev , uint8_t * report , uint16_t len )
 {
-  USBD_HID_HandleTypeDef * hhid = ( USBD_HID_HandleTypeDef * ) pdev->pClassData ;
-  USBD_StatusTypeDef typeDef = USBD_FAIL ;
+	USBD_HID_HandleTypeDef * hhid = ( USBD_HID_HandleTypeDef * ) pdev->pClassData ;
+	USBD_StatusTypeDef typeDef = USBD_FAIL ;
 
 	if( USBD_STATE_CONFIGURED != pdev->dev_state )
 	{
