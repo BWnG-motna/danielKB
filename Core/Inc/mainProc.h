@@ -17,6 +17,8 @@
 void MainProc() ;
 uint32_t millis() ;
 
+void UartRX( UART_HandleTypeDef * pHandle , uint8_t const port ) ;
+void ReceiveUartRx( uint8_t const dat , uint8_t const port ) ;
 
 #ifdef __cplusplus
 }
