@@ -5,15 +5,19 @@ This is a keyboard I made for myself. Since I like the HHKB Style, I have made s
 
 ## Dev. Info
 - MPU : STM32F103RCT6
-
 - IDE : STM32CubeIDE
-
 - ECAD : EasyEDA Pro
-
 - PCB and PCBA were manufactured through JLCPCB( [jlcpcb.com](https://jlcpcb.com/) )
-        
-  
-  
+
+
+
+## Version
+
+- Hardware : v 1.4.0
+- Firmware : v 1.1     
+
+
+
 ## Issue
  - Currently, Volume Up/Down and Mute key is not operated.
    
