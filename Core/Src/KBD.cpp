@@ -36,8 +36,8 @@ daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 /* E */ key::F9          , key::F10        , key::None      , key::PrintScreen   , key::None        , key::LeftArrow    , key::None        , key::DownArrow ,
 /* F */ key::F11         , key::F12        , key::None      , key::DeleteForward , key::UpArrow     , key::None         , key::RightArrow  , key::None      ,
 /* G */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* H */ key::None        , key::None       , key::None      , key::Space         , key::Space       , key::Space        , key::Space       , key::None      ,
-/* I */ key::CapsLock    , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
+/* H */ key::CapsLock    , key::None       , key::None      , key::Space         , key::Space       , key::Space        , key::Space       , key::None      ,
+/* I */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* J */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* K */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* L */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
@@ -461,12 +461,13 @@ void daniel::KBD::Loop()
 
 	    if( key::None != k && false == isConsumer )
 		{
+#if 0
 			if( KeyPage::CapsLock == k ) // exception handling - it recognize pressing FN + Left CTRL
 			{
 				isModKey = false ;
 				modKeySt[ 1 ].isPressed = 0 ;
 			}
-
+#endif
 			HID_InputReport input( 1 ) ;
 
 			if( key::Tab == k )
