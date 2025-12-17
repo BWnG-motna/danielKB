@@ -37,10 +37,10 @@ daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 /* F */ key::F11         , key::F12        , key::None      , key::DeleteForward , key::UpArrow     , key::None         , key::RightArrow  , key::None      ,
 /* G */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* H */ key::CapsLock    , key::None       , key::None      , key::Space         , key::Space       , key::Space        , key::Space       , key::None      ,
-/* I */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* J */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* K */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* L */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
+/* I */ key::LeftCONTROL , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
+/* J */ key::LeftSHIFT   , key::RightSHIFT , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
+/* K */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::LeftALT     , key::RightALT  ,
+/* L */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::LeftGUI     , key::RightGUI  ,
 } ;
 
 
