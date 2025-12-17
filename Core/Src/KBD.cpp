@@ -209,17 +209,17 @@ void daniel::KBD::GetInA()
 {
 	uint32_t adc = GetAdcA() ;
 
-	/**/ if( 100 <= adc && 300 > adc )
+	/**/ if( 100 <= adc && 200 > adc )
 	{
 		inKey[ 0 ] = true  ;
 		inKey[ 1 ] = false ;
 	}
-	else if( 300 <= adc && 500 > adc )
+	else if( 200 <= adc && 450 > adc )
 	{
 		inKey[ 0 ] = false ;
 		inKey[ 1 ] = true  ;
 	}
-	else if( 500 <= adc )
+	else if( 450 <= adc )
 	{
 		inKey[ 0 ] = true ;
 		inKey[ 1 ] = true ;
@@ -231,17 +231,17 @@ void daniel::KBD::GetInB()
 {
 	uint32_t adc = GetAdcB() ;
 
-	/**/ if( 100 <= adc && 300 > adc )
+	/**/ if( 100 <= adc && 200 > adc )
 	{
 		inKey[ 2 ] = true  ;
 		inKey[ 3 ] = false ;
 	}
-	else if( 300 <= adc && 500 > adc )
+	else if( 200 <= adc && 450 > adc )
 	{
 		inKey[ 2 ] = false ;
 		inKey[ 3 ] = true  ;
 	}
-	else if( 500 <= adc )
+	else if( 450 <= adc )
 	{
 		inKey[ 2 ] = true ;
 		inKey[ 3 ] = true ;
@@ -253,12 +253,12 @@ void daniel::KBD::GetInC()
 {
 	uint32_t adc = GetAdcC() ;
 
-	/**/ if( 100 <= adc && 300 > adc )
+	/**/ if( 100 <= adc && 200 > adc )
 	{
 		inKey[ 4 ] = true  ;
 		inKey[ 5 ] = false ;
 	}
-	else if( 300 <= adc && 500 > adc )
+	else if( 200 <= adc && 450 > adc )
 	{
 		inKey[ 4 ] = false ;
 		inKey[ 5 ] = true  ;
@@ -275,17 +275,17 @@ void daniel::KBD::GetInD()
 {
 	uint32_t adc = GetAdcD() ;
 
-	/**/ if( 100 <= adc && 300 > adc )
+	/**/ if( 100 <= adc && 200 > adc )
 	{
 		inKey[ 6 ] = true  ;
 		inKey[ 7 ] = false ;
 	}
-	else if( 300 <= adc && 500 > adc )
+	else if( 200 <= adc && 450 > adc )
 	{
 		inKey[ 6 ] = false ;
 		inKey[ 7 ] = true  ;
 	}
-	else if( 500 <= adc )
+	else if( 450 <= adc )
 	{
 		inKey[ 6 ] = true ;
 		inKey[ 7 ] = true ;
