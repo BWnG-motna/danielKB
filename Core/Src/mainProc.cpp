@@ -30,6 +30,8 @@ void MainProc()
 	HAL_TIM_Base_Start_IT( & htim7 ) ;
 	HAL_TIM_Base_Start   ( & htim8 ) ;
 
+	RegisterDelayTimer( & htim8 ) ;
+
 	uart.SetHandle( & huart1 ) ;
 	uart.Begin() ;
 

@@ -9,7 +9,18 @@
 
 
 extern uint32_t millisec ;
-extern TIM_HandleTypeDef  htim8  ;
+
+
+namespace
+{
+	TIM_HandleTypeDef * pHtim = nullptr ;
+}
+
+
+void RegisterDelayTimer( TIM_HandleTypeDef * p )
+{
+	pHtim = p ;
+}
 
 
 uint32_t millis()
@@ -50,17 +61,17 @@ uint32_t DelayMs( uint32_t const ms )
 
 uint32_t DelayUs( uint32_t const delayUs )
 {
-	if( 1 > delayUs )
+	if( 1 > delayUs || nullptr == pHtim )
 	{
 		return 0 ;
 	}
 
-	uint32_t start  = __HAL_TIM_GET_COUNTER( & htim8 ) ;
+	uint32_t start  = __HAL_TIM_GET_COUNTER( pHtim ) ;
 	uint32_t remain = delayUs ;
 
 	while( 0 < remain )
 	{
-		uint32_t current = __HAL_TIM_GET_COUNTER( & htim8 ) ;
+		uint32_t current = __HAL_TIM_GET_COUNTER( pHtim ) ;
 		uint32_t elapsed ;
 
 		if( start <= current )

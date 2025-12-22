@@ -14,11 +14,12 @@
  extern "C" {
 #endif
 
-
 uint32_t millis() ;
 
 uint32_t DelayMs( uint32_t const ms ) ;
 uint32_t DelayUs( uint32_t const us ) ;
+
+void RegisterDelayTimer( TIM_HandleTypeDef * pHtim ) ;
 
 #ifdef __cplusplus
 }
