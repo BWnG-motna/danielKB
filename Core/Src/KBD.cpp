@@ -188,10 +188,12 @@ void daniel::KBD::SetOut( uint8_t const & outNo )
 
 void daniel::KBD::GetIn()
 {
+#if 0
 	for( uint8_t pos = 0 ; pos < inSignal ; ++pos )
 	{
 		inKey[ pos ] = false ;
 	}
+#endif
 
 	void ( daniel::KBD:: * fpArr[ 4 ] )()
 		= { & daniel::KBD::GetInA , & daniel::KBD::GetInB ,
@@ -226,7 +228,8 @@ void daniel::KBD::GetInA()
 	}
 	else
 	{
-		// IGNORE
+		inKey[ 0 ] = false ;
+		inKey[ 1 ] = false ;
 	}
 }
 
@@ -252,7 +255,8 @@ void daniel::KBD::GetInB()
 	}
 	else
 	{
-		// IGNORE
+		inKey[ 2 ] = false ;
+		inKey[ 3 ] = false ;
 	}
 }
 
@@ -278,7 +282,8 @@ void daniel::KBD::GetInC()
 	}
 	else
 	{
-		// IGNORE
+		inKey[ 4 ] = false ;
+		inKey[ 5 ] = false ;
 	}
 }
 
@@ -301,6 +306,11 @@ void daniel::KBD::GetInD()
 	{
 		inKey[ 6 ] = true ;
 		inKey[ 7 ] = true ;
+	}
+	else
+	{
+		inKey[ 6 ] = false ;
+		inKey[ 7 ] = false ;
 	}
 }
 
@@ -458,6 +468,7 @@ void daniel::KBD::Loop()
 
 		daniel::KeyPage k = ( true == modKeySt[ 1 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
 		bool isConsumer = IsConsumerProfile( k ) ;
+		bool isSent = false ;
 
 	    if( key::None != k && false == isConsumer )
 		{
@@ -470,7 +481,7 @@ void daniel::KBD::Loop()
 #endif
 			HID_InputReport input( 1 ) ;
 
-			if( key::Tab == k )
+			/**/ if( key::Tab == k )
 			{
 				input.SetKeyCode6( static_cast< uint8_t >( ( true == currKeyPressed[ pos ] ) ? key::Tab : key::None ) ) ;
 			}
@@ -494,7 +505,7 @@ void daniel::KBD::Loop()
 				KeyRelease( input ) ;
 			}
 
-			DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
+			isSent = true ;
 		}
 	    else if( key::None != k &&  true == isConsumer )
 		{
@@ -516,10 +527,10 @@ void daniel::KBD::Loop()
 
 				gpio.SetDbgLed3( false ) ;
 
-				DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
+				isSent = true ;
 			}
 		}
-	    else if( keySpPos == pos )
+	    else if( keySpPos == pos ) /* */
 	    {
 	    	if( false == modKeySt[ 0 ].isPressed || false == modKeySt[ 1 ].isPressed )
 	    	{
@@ -557,20 +568,25 @@ void daniel::KBD::Loop()
 	    	}
 	    }
 
-	    /*
-	     * GPIO writing   -    30 ns
-	     * SetOut         -   360 ns
-	     *  -> 12 times   -   4.3 us
-	     * GetIn          -   1~2 us
-	     *  -> 12 times   - 20~30 us
-	     * Key Processing -   0.7 us
-	     *  -> 96 times   -    70 us
-	     *
-	     * Total          - about 150 us
-	     * */
-
-	    DelayUs( 850 ) ; // for less consumption
+	    if( true == isSent )
+	    {
+	    	DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
+	    }
 	}
+
+	 /*
+	 * GPIO writing   -    30 ns
+	 * SetOut         -   360 ns
+	 *  -> 12 times   -   4.3 us
+	 * GetIn          -   1~2 us
+	 *  -> 12 times   - 20~30 us
+	 * Key Processing -   0.7 us
+	 *  -> 96 times   -    70 us
+	 *
+	 * Total          - about 150 us
+	 * */
+
+	DelayUs( 850 ) ; // for less consumption
 }
 
 
