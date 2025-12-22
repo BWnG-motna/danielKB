@@ -20,6 +20,7 @@ uint32_t DelayMs( uint32_t const ms ) ;
 uint32_t DelayUs( uint32_t const us ) ;
 
 void RegisterDelayTimer( TIM_HandleTypeDef * pHtim ) ;
+void RegisterMillisCounter( volatile uint32_t * p ) ;
 
 #ifdef __cplusplus
 }

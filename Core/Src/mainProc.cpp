@@ -21,6 +21,8 @@ extern TIM_HandleTypeDef  htim8  ;
 extern UART_HandleTypeDef huart1 ;
 extern USBD_HandleTypeDef hUsbDeviceFS ;
 
+extern uint32_t millisec ;
+
 daniel::USART uart ;
 daniel::KBD   kbd  ;
 
@@ -31,6 +33,7 @@ void MainProc()
 	HAL_TIM_Base_Start   ( & htim8 ) ;
 
 	RegisterDelayTimer( & htim8 ) ;
+	RegisterMillisCounter( & millisec ) ;
 
 	uart.SetHandle( & huart1 ) ;
 	uart.Begin() ;

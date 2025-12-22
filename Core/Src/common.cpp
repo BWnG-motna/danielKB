@@ -7,13 +7,10 @@
 
 #include "common.h"
 
-
-extern uint32_t millisec ;
-
-
 namespace
 {
 	TIM_HandleTypeDef * pHtim = nullptr ;
+	volatile uint32_t * pMillisec ;
 }
 
 
@@ -23,9 +20,20 @@ void RegisterDelayTimer( TIM_HandleTypeDef * p )
 }
 
 
+void RegisterMillisCounter( volatile uint32_t * p )
+{
+	pMillisec = p ;
+}
+
+
 uint32_t millis()
 {
-	return millisec ;
+	if( nullptr == pMillisec )
+	{
+		return 0 ;
+	}
+
+	return *pMillisec ;
 }
 
 
