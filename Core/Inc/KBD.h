@@ -100,8 +100,10 @@ private :
 	void Loop() ;
 
 private :
+	bool SendReport( uint8_t * pDat , uint16_t const & len ) ;
+
+private :
 	void KeyPress( HID_InputReport const & ir ) ;
-	void KeyRelease( HID_InputReport const & ir ) ;
 
 private :
 	bool     IsConsumerProfile( KeyPage const & keyPage ) ;

@@ -468,7 +468,6 @@ void daniel::KBD::Loop()
 
 		daniel::KeyPage k = ( true == modKeySt[ 1 ].isPressed ) ? keymap[ keyCnt + pos ] : keymap[ pos ] ; // with FN key
 		bool isConsumer = IsConsumerProfile( k ) ;
-		bool isSent = false ;
 
 	    if( key::None != k && false == isConsumer )
 		{
@@ -502,10 +501,10 @@ void daniel::KBD::Loop()
 
 			if( false == isModKey && key::Tab != k )
 			{
-				KeyRelease( input ) ;
+				input.SetKeyCode1( static_cast< uint8_t >( key::None ) ) ;
+				KeyPress( input ) ;
 			}
 
-			isSent = true ;
 		}
 	    else if( key::None != k &&  true == isConsumer )
 		{
@@ -523,11 +522,13 @@ void daniel::KBD::Loop()
 				input.SetKeyCode2( msb ) ;
 
 				KeyPress( input ) ;
-				KeyRelease( input ) ;
+
+				input.SetKeyCode1( static_cast< uint8_t >( key::None ) ) ;
+				input.SetKeyCode2( static_cast< uint8_t >( key::None ) ) ;
+
+				KeyPress( input ) ;
 
 				gpio.SetDbgLed3( false ) ;
-
-				isSent = true ;
 			}
 		}
 	    else if( keySpPos == pos ) /* */
@@ -564,13 +565,7 @@ void daniel::KBD::Loop()
 				input.SetKeyCode( reinterpret_cast< uint8_t const >( reqKey ) ) ;
 
 				KeyPress( input ) ;
-				DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 	    	}
-	    }
-
-	    if( true == isSent )
-	    {
-	    	DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 	    }
 	}
 
@@ -590,29 +585,47 @@ void daniel::KBD::Loop()
 }
 
 
-void daniel::KBD::KeyPress( HID_InputReport const & ir )
+bool daniel::KBD::SendReport( uint8_t * pDat , uint16_t const & len )
 {
-	USBD_StatusTypeDef typeDef ;
-
-	do
+	if( nullptr == pUsbHandle )
 	{
-		typeDef = USBD_HID_SendReport( pUsbHandle , ir.GetSerialized() , ir.GetSerializedLength() ) ;
+		return false ;
+	}
 
-	} while( USBD_OK != typeDef ) ;
+	if( USBD_STATE_CONFIGURED != pUsbHandle->dev_state )
+	{
+		return false ;
+	}
 
+	USBD_HID_HandleTypeDef * phhid = ( USBD_HID_HandleTypeDef * ) pUsbHandle->pClassData ;
+
+	if( nullptr == phhid )
+	{
+		return false ;
+	}
+
+	if( HID_IDLE != phhid->state )
+	{
+		return false ;
+	}
+
+	phhid->state = HID_BUSY ;
+	USBD_StatusTypeDef typeDef = USBD_LL_Transmit( pUsbHandle , HID_EPIN_ADDR , pDat , len ) ;
+	if( USBD_OK != typeDef )
+	{
+		return false ;
+	}
+
+	return true ;
 }
 
 
-void daniel::KBD::KeyRelease( HID_InputReport const & ir )
+void daniel::KBD::KeyPress( HID_InputReport const & ir )
 {
-	USBD_StatusTypeDef typeDef ;
-
-	do
+	while( false == SendReport( ir.GetSerialized() , ir.GetSerializedLength() ) )
 	{
-		HID_InputReport resetIR( ir.GetReportId() ) ;
-		typeDef = USBD_HID_SendReport( pUsbHandle , resetIR.GetSerialized() , resetIR.GetSerializedLength() ) ;
-
-	} while( USBD_OK != typeDef ) ;
+		;
+	}
 }
 
 
