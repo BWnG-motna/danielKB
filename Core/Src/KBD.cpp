@@ -443,7 +443,7 @@ void daniel::KBD::Loop()
 		/**/ if(  true == currKeyPressed[ pos ] &&  true == prevKeyPressed[ pos ] )
 		{
 			uint16_t repeatDelay[ 4 ] = { 400 , 200 , 140 , 50 } ;
-			if( repeatDelay[ repeat[ pos ] ] > diffTime )
+			if( diffTime < repeatDelay[ repeat[ pos ] ] )
 			{
 				continue ;
 			}
