@@ -493,6 +493,8 @@ void daniel::KBD::Loop()
 			{
 				KeyRelease( input ) ;
 			}
+
+			DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 		}
 	    else if( key::None != k &&  true == isConsumer )
 		{
@@ -513,6 +515,8 @@ void daniel::KBD::Loop()
 				KeyRelease( input ) ;
 
 				gpio.SetDbgLed3( false ) ;
+
+				DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 			}
 		}
 	    else if( keySpPos == pos )
@@ -549,9 +553,23 @@ void daniel::KBD::Loop()
 				input.SetKeyCode( reinterpret_cast< uint8_t const >( reqKey ) ) ;
 
 				KeyPress( input ) ;
-				HAL_Delay( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
+				DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 	    	}
 	    }
+
+	    /*
+	     * GPIO writing   -    30 ns
+	     * SetOut         -   360 ns
+	     *  -> 12 times   -   4.3 us
+	     * GetIn          -   1~2 us
+	     *  -> 12 times   - 20~30 us
+	     * Key Processing -   0.7 us
+	     *  -> 96 times   -    70 us
+	     *
+	     * Total          - about 150 us
+	     * */
+
+	    DelayUs( 850 ) ; // for less consumption
 	}
 }
 

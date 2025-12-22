@@ -17,6 +17,7 @@
 
 extern ADC_HandleTypeDef  hadc1  ;
 extern TIM_HandleTypeDef  htim7  ;
+extern TIM_HandleTypeDef  htim8  ;
 extern UART_HandleTypeDef huart1 ;
 extern USBD_HandleTypeDef hUsbDeviceFS ;
 
@@ -27,6 +28,7 @@ daniel::KBD   kbd  ;
 void MainProc()
 {
 	HAL_TIM_Base_Start_IT( & htim7 ) ;
+	HAL_TIM_Base_Start   ( & htim8 ) ;
 
 	uart.SetHandle( & huart1 ) ;
 	uart.Begin() ;
