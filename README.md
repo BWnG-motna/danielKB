@@ -23,7 +23,6 @@ This is a keyboard I made for myself. Since I like the HHKB Style, I have made s
    
  - This is operated on 6KRO ( 6-Key rollover ), No NKRO( N-Key rollover )
    
-   - For NKRO, firmware should be changed.
    
    
    
