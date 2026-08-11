@@ -329,10 +329,10 @@ __ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_6KRO[ HID_KEYBOARD_6KRO_REP
 	0x95 , 0x06 ,                    //   REPORT_COUNT (6)
 	0x75 , 0x08 ,                    //   REPORT_SIZE (8)
 	0x15 , 0x00 ,                    //   LOGICAL_MINIMUM (0)
-	0x25 , 0x65 ,                    //   LOGICAL_MAXIMUM (101)
+	0x25 , 0x9F ,                    //   LOGICAL_MAXIMUM (101)
 	0x05 , 0x07 ,                    //   USAGE_PAGE (Keyboard)
 	0x19 , 0x00 ,                    //   USAGE_MINIMUM (Reserved)
-	0x29 , 0x65 ,                    //   USAGE_MAXIMUM (Keyboard Application)
+	0x29 , 0x9F ,                    //   USAGE_MAXIMUM (Keyboard Application)
 	0x81 , 0x00 ,                    //   INPUT (Data ,Ary ,Abs)
 	0xC0 ,                           // END_COLLECTION
 
@@ -379,13 +379,13 @@ __ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_NKRO[ HID_KEYBOARD_NKRO_REP
     0x95 , 0x01 ,        // REPORT_COUNT (1)
     0x75 , 0x03 ,        // REPORT_SIZE (3)
     0x91 , 0x03 ,        // OUTPUT (Const, Var, Abs)
-    0x95 , 0x80 ,        // REPORT_COUNT (128)    // Key Bitmap (16 bytes = 128 keys) → NKRO
+    0x95 , 0xA0 ,        // REPORT_COUNT (160)    // 0x00 ~ 0x9F → NKRO
     0x75 , 0x01 ,        // REPORT_SIZE (1)
     0x15 , 0x00 ,        // LOGICAL_MINIMUM (0)
     0x25 , 0x01 ,        // LOGICAL_MAXIMUM (1)
     0x05 , 0x07 ,        // USAGE_PAGE (Keyboard)
     0x19 , 0x00 ,        // USAGE_MINIMUM (0)
-    0x29 , 0x7F ,        // USAGE_MAXIMUM (127)
+    0x29 , 0x9F ,        // USAGE_MAXIMUM (0x9F)
     0x81 , 0x02 ,        // INPUT (Data, Var, Abs)
     0xC0 ,               // END_COLLECTION
 

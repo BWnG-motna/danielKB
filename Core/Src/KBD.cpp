@@ -54,21 +54,21 @@ daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 
 
 daniel::KBD::KBD()
-	: pAdcHandle( nullptr ) , pUsbHandle( nullptr ) , pGpio( nullptr ) , keyProfile( KeyProfile::Profile_NKRO )
+	: pAdcHandle( nullptr ) , pUsbHandle( nullptr ) , pGpio( nullptr ) , keyProfile( KeyProfile::Profile_NKRO ) , useIme( false )
 {
 
 }
 
 
 daniel::KBD::KBD( ADC_HandleTypeDef * _pAdcHandle , USBD_HandleTypeDef * _pUsbHandle )
-	: pAdcHandle( _pAdcHandle ) , pUsbHandle( _pUsbHandle ) , pGpio( nullptr ) , keyProfile( KeyProfile::Profile_NKRO )
+	: pAdcHandle( _pAdcHandle ) , pUsbHandle( _pUsbHandle ) , pGpio( nullptr ) , keyProfile( KeyProfile::Profile_NKRO ) , useIme( false )
 {
 
 }
 
 
 daniel::KBD::KBD( ADC_HandleTypeDef * _pAdcHandle , USBD_HandleTypeDef * _pUsbHandle , GPIO * pGpioHandle )
-	: pAdcHandle( _pAdcHandle ) , pUsbHandle( _pUsbHandle ) , pGpio( pGpioHandle ) , keyProfile( KeyProfile::Profile_NKRO )
+	: pAdcHandle( _pAdcHandle ) , pUsbHandle( _pUsbHandle ) , pGpio( pGpioHandle ) , keyProfile( KeyProfile::Profile_NKRO ) , useIme( false )
 {
 
 }
@@ -95,6 +95,12 @@ void daniel::KBD::SetGpio( GPIO * pHandle )
 void daniel::KBD::SetProfile( KeyProfile const & profile )
 {
 	keyProfile = profile ;
+}
+
+
+void daniel::KBD::UseIme( bool const & is )
+{
+	useIme = is ;
 }
 
 
@@ -458,6 +464,11 @@ void daniel::KBD::ReadKeyMatrix()
 		modKeySt[ pos ].isPressed = false ;
 	}
 
+	if( true == useIme )
+	{
+		modKeySt[ 7 ].keyPos = keyCnt ;
+	}
+
 
 	bool isRegKey = false ;
 	bool isModKey = false ;
@@ -576,6 +587,11 @@ daniel::HID_InputReport_6KRO daniel::KBD::MakeHIDInputReport_6KRO()
 			continue ;
 		}
 
+		if( true == useIme && key::RightALT == k )
+		{
+			k = key::Lang1 ;
+		}
+
 		/**/ if( 0 <  reptT[ pos ] && 6 > keyCodePCnt )
 		{
 			keyCodeP[ keyCodePCnt++ ] = static_cast< uint8_t >( k ) ;
@@ -667,6 +683,11 @@ daniel::HID_InputReport_NKRO daniel::KBD::MakeHIDInputReport_NKRO()
 		if( true == isConsumer || true == isModK || key::None == k )
 		{
 			continue ;
+		}
+
+		if( true == useIme && key::RightALT == k )
+		{
+			k = key::Lang1 ;
 		}
 
 		input.SetKeyCode( static_cast< uint8_t >( k ) , currK[ pos ] ) ;

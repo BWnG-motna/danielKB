@@ -15,7 +15,7 @@ daniel::HID_InputReport_NKRO::HID_InputReport_NKRO( uint8_t const & _reportId )
 	   leftGUI( 0x00 ) ,  leftALT( 0x00 ) ,  leftSHIFT( 0x00 ) ,  leftCTRL( 0x00 ) ,
 	  reserved( 0x00 ) , consumerKey( 0x00 )
 {
-	for( uint8_t pos = 0 ; pos < 16 ; ++pos )
+	for( uint8_t pos = 0 ; pos < 20 ; ++pos )
 	{
 		keyMap[ pos ] = 0 ;
 	}
@@ -28,7 +28,7 @@ daniel::HID_InputReport_NKRO::HID_InputReport_NKRO( HID_InputReport_NKRO const &
 	   leftGUI( o.leftGUI  ) ,  leftALT( o.leftALT  ) ,  leftSHIFT( o.leftSHIFT  ) ,  leftCTRL( o.leftCTRL  ) ,
 	  reserved( o.reserved ) , consumerKey( o.consumerKey )
 {
-    for( uint8_t pos = 0 ; pos < 16 ; ++pos )
+    for( uint8_t pos = 0 ; pos < 20 ; ++pos )
     {
         keyMap[ pos ] = o.keyMap[ pos ] ;
     }
@@ -54,7 +54,7 @@ daniel::HID_InputReport_NKRO & daniel::HID_InputReport_NKRO::operator=( HID_Inpu
     reserved    = o.reserved ;
     consumerKey = o.consumerKey ;
 
-    for( uint8_t pos = 0 ; pos < 16 ; ++pos )
+    for( uint8_t pos = 0 ; pos < 20 ; ++pos )
     {
         keyMap[ pos ] = o.keyMap[ pos ] ;
     }
@@ -85,7 +85,7 @@ bool daniel::HID_InputReport_NKRO::operator==( HID_InputReport_NKRO const & o ) 
     }
 
 
-    for( uint8_t pos = 0 ; pos < 16 ; ++pos )
+    for( uint8_t pos = 0 ; pos < 20 ; ++pos )
     {
         if( keyMap[ pos ] != o.keyMap[ pos ] )
         {
@@ -120,7 +120,7 @@ void daniel::HID_InputReport_NKRO::Reset()
 
 	consumerKey = 0x00 ;
 
-	for( uint8_t pos = 0 ; pos < 16 ; ++pos )
+	for( uint8_t pos = 0 ; pos < 20 ; ++pos )
 	{
 		keyMap[ pos ] = 0 ;
 	}
@@ -189,9 +189,9 @@ void daniel::HID_InputReport_NKRO::SetConsumerKey( uint16_t const & key )
 
 uint8_t * daniel::HID_InputReport_NKRO::GetSerialized() const
 {
-	static uint8_t keyCode[ 19 ] ;
+	static uint8_t keyCode[ 23 ] ;
 
-	for( uint8_t pos = 0 ; pos < 19 ; ++pos )
+	for( uint8_t pos = 0 ; pos < 23 ; ++pos )
 	{
 		keyCode[ pos ] = 0x00 ;
 	}
@@ -211,7 +211,7 @@ uint8_t * daniel::HID_InputReport_NKRO::GetSerialized() const
 
 		keyCode[ 2 ] = reserved ;
 
-		for( uint8_t pos = 0 ; pos < 16 ; ++pos )
+		for( uint8_t pos = 0 ; pos < 20 ; ++pos )
 		{
 			keyCode[ 3 + pos ] = keyMap[ pos ] ;
 		}
@@ -232,7 +232,7 @@ uint16_t daniel::HID_InputReport_NKRO::GetSerializedLength() const
 {
 	/**/ if( 1 == reportId )
 	{
-		return 19 ;
+		return 23 ;
 	}
 	else if( 2 == reportId )
 	{
@@ -281,7 +281,7 @@ uint8_t daniel::HID_InputReport_NKRO::GetReportId() const
 
 void daniel::HID_InputReport_NKRO::SetKeyCode( uint8_t const & keycode , bool const & isPress )
 {
-	if( 128 <= keycode )
+	if( 160 <= keycode )
 	{
 		return ;
 	}

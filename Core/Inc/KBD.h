@@ -81,6 +81,9 @@ private :
 	HID_InputReport_6KRO inputReport6KRO ;
 
 private :
+	bool useIme ;
+
+private :
 	void SetSigA( bool const & isSet ) ;
 	void SetSigB( bool const & isSet ) ;
 	void SetSigC( bool const & isSet ) ;
@@ -142,6 +145,7 @@ public :
 	void SetUSBHandle( USBD_HandleTypeDef * pHandle ) ;
 	void SetGpio( GPIO * pHandle ) ;
 	void SetProfile( KeyProfile const & profile ) ;
+	void UseIme( bool const & is ) ;
 
 public :
 	KBD( ADC_HandleTypeDef * pAdcHandle , USBD_HandleTypeDef * pUsbHandle , GPIO * pGpioHandle ) ;

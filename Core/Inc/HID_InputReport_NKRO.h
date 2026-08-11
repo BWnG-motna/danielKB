@@ -27,7 +27,7 @@ private :
 	uint8_t leftSHIFT  : 1 ;
 	uint8_t leftCTRL   : 1 ;
 	uint8_t reserved ;
-	uint8_t keyMap[ 16 ] ;
+	uint8_t keyMap[ 20 ] ;
 
 	uint16_t consumerKey ;
 

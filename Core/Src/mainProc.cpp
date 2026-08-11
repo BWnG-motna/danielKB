@@ -31,7 +31,8 @@ uint8_t HIDSerialNo[ 12 ] ;
 uint8_t HIDSerialNoLen ;
 
 
-void SetKetyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp ) ;
+void SetKeyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp ) ;
+bool ReadImeMode( daniel::GPIO & gpio ) ;
 
 
 void MainProc()
@@ -48,7 +49,7 @@ void MainProc()
 	daniel::GPIO gpio( & hi2c1 ) ;
 	daniel::KeyProfile kp ;
 
-	SetKetyDescProfileMode( gpio , kp ) ;
+	SetKeyDescProfileMode( gpio , kp ) ;
 	SetHIDSerialNo() ;
 
 	MX_USB_DEVICE_Init() ;
@@ -58,16 +59,17 @@ void MainProc()
 	kbd.SetUSBHandle( & hUsbDeviceFS ) ;
 	kbd.SetGpio( & gpio ) ;
 	kbd.SetProfile( kp ) ;
+	kbd.UseIme( ReadImeMode( gpio ) ) ;
 	kbd.Run() ;
 
 	while( true ) ;
 }
 
 
-void SetKetyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp )
+void SetKeyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp )
 {
 	bool sw = false ;
-	uint8_t const & pos = 1 ;
+	uint8_t const pos = 1 ;
 
 
 	// Pre-processing was performed so that the keyboard operates normally,
@@ -83,6 +85,20 @@ void SetKetyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp )
 
 	kp = ( true == sw ) ? KP::Profile_6KRO : KP::Profile_NKRO ;
 	keyDescProfileMode = ( true == sw ) ? 2 : 1 ;
+}
+
+
+bool ReadImeMode( daniel::GPIO & gpio )
+{
+	bool sw = false ;
+	uint8_t const pos = 2 ;
+
+	if( false == gpio.GetSwStatus( sw , pos ) )
+	{
+		return false ;
+	}
+
+	return ( true == sw ) ? true : false ;
 }
 
 
