@@ -124,12 +124,27 @@ void HAL_PCD_SetupStageCallback( PCD_HandleTypeDef * hpcd )
   * @param  epnum: Endpoint number
   * @retval None
   */
+
+extern uint8_t HID_RxBuffer[ 8 ] ;
+uint8_t isRecvLedStatus = 0x00 ;
+uint8_t recvLedStatus   = 0x00 ;
+
+
 #if ( USE_HAL_PCD_REGISTER_CALLBACKS == 1U )
 static void PCD_DataOutStageCallback( PCD_HandleTypeDef * hpcd , uint8_t epnum )
 #else
 void HAL_PCD_DataOutStageCallback( PCD_HandleTypeDef * hpcd , uint8_t epnum )
 #endif /* USE_HAL_PCD_REGISTER_CALLBACKS */
 {
+	if( 0U == epnum && 2U <= hpcd->OUT_ep[ 0 ].xfer_count ) // report id 1
+	{
+		if( 0x01 == HID_RxBuffer[ 0 ] )
+		{
+			isRecvLedStatus = 0x01 ;
+			  recvLedStatus = HID_RxBuffer[ 1 ] ;
+		}
+	}
+
 	USBD_LL_DataOutStage( ( USBD_HandleTypeDef * ) hpcd->pData , epnum , hpcd->OUT_ep[ epnum ].xfer_buff ) ;
 }
 

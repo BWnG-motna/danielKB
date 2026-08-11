@@ -469,6 +469,8 @@ static uint8_t USBD_HID_DeInit( USBD_HandleTypeDef * pdev , uint8_t cfgidx )
   * @retval status
   */
 
+uint8_t HID_RxBuffer[ 8 ] ;
+
 static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef * req )
 {
 	USBD_HID_HandleTypeDef * hhid = ( USBD_HID_HandleTypeDef * ) pdev->pClassData ;
@@ -497,6 +499,15 @@ static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef 
 				case HID_REQ_GET_IDLE :
 					USBD_CtlSendData( pdev , ( uint8_t * )( void * ) & hhid->IdleState,  1U ) ;
 					break ;
+
+				case HID_REQ_SET_REPORT:
+				{
+				    if( 0x02 == ( req->wValue >> 8 ) )
+				    {
+				        USBD_CtlPrepareRx( pdev , HID_RxBuffer , req->wLength ) ;
+				    }
+				    break ;
+				}
 
 				default:
 					USBD_CtlError( pdev , req ) ;
