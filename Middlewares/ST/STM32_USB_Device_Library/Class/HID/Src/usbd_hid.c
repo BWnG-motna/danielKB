@@ -131,6 +131,112 @@ USBD_ClassTypeDef  USBD_HID =
 extern uint8_t keyDescProfileMode ; // 1 == NKRO , other == 6KRO
 
 
+__ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_6KRO[ HID_KEYBOARD_REPORT_DESC_SIZE ]  __ALIGN_END =
+{
+	// General Keyboard Report ( Report ID 1 )
+	0x05 , 0x01 ,        // USAGE_PAGE        ( Generic Desktop )
+	0x09 , 0x06 ,        // USAGE             ( Keyboard        )
+	0xA1 , 0x01 ,        // COLLECTION        ( Application     )
+	0x85 , 0x01 ,        //   REPORT_ID       (    1 )
+	0x05 , 0x07 ,        //   USAGE_PAGE      ( Keyboard )
+	0x19 , 0xE0 ,        //   USAGE_MINIMUM   ( Keyboard LeftControl )
+	0x29 , 0xE7 ,        //   USAGE_MAXIMUM   ( Keyboard Right GUI   )
+	0x15 , 0x00 ,        //   LOGICAL_MINIMUM (    0 )
+	0x25 , 0x01 ,        //   LOGICAL_MAXIMUM (    1 )
+	0x75 , 0x01 ,        //   REPORT_SIZE     (    1 )
+	0x95 , 0x08 ,        //   REPORT_COUNT    (    8 )
+	0x81 , 0x02 ,        //   INPUT           ( Data , Var , Abs )
+	0x95 , 0x01 ,        //   REPORT_COUNT    (    1 )
+	0x75 , 0x08 ,        //   REPORT_SIZE     (    8 )
+	0x81 , 0x03 ,        //   INPUT           ( Cnst , Var , Abs )
+	0x95 , 0x05 ,        //   REPORT_COUNT    (    5 )
+	0x75 , 0x01 ,        //   REPORT_SIZE     (    1 )
+	0x05 , 0x08 ,        //   USAGE_PAGE      ( LEDs )
+	0x19 , 0x01 ,        //   USAGE_MINIMUM   ( Num Lock )
+	0x29 , 0x05 ,        //   USAGE_MAXIMUM   ( Kana )
+	0x91 , 0x02 ,        //   OUTPUT          ( Data , Var , Abs )
+	0x95 , 0x01 ,        //   REPORT_COUNT    (    1 )
+	0x75 , 0x03 ,        //   REPORT_SIZE     (    3 )
+	0x91 , 0x03 ,        //   OUTPUT          ( Cnst , Var , Abs )
+	0x95 , 0x06 ,        //   REPORT_COUNT    (    6 )
+	0x75 , 0x08 ,        //   REPORT_SIZE     (    8 )
+	0x15 , 0x00 ,        //   LOGICAL_MINIMUM (    0 )
+	0x25 , 0x9F ,        //   LOGICAL_MAXIMUM (  159 )
+	0x05 , 0x07 ,        //   USAGE_PAGE      ( Keyboard )
+	0x19 , 0x00 ,        //   USAGE_MINIMUM   ( Reserved )
+	0x29 , 0x9F ,        //   USAGE_MAXIMUM   ( Keyboard Application )
+	0x81 , 0x00 ,        //   INPUT           ( Data , Ary , Abs )
+	0xC0 ,               // END_COLLECTION
+
+	// Consumer Control Report ( Report ID 2 )
+    0x05 , 0x0C ,        // USAGE_PAGE        ( Consumer Devices )
+    0x09 , 0x01 ,        // USAGE             ( Consumer Control )
+    0xA1 , 0x01 ,        // COLLECTION        ( Application )
+    0x85 , 0x02 ,        //   REPORT_ID       (  2 )
+    0x1A , 0xB0 , 0x00 , //   USAGE_MINIMUM   ( 0x00B0 )
+    0x2A , 0xEA , 0x00 , //   USAGE_MAXIMUM   ( 0x00EA )
+    0x16 , 0xB0 , 0x00 , //   LOGICAL_MINIMUM ( 0x00B0 )
+    0x26 , 0xEA , 0x00 , //   LOGICAL_MAXIMUM ( 0x00EA )
+    0x95 , 0x01 ,        //   REPORT_COUNT    (  1 )
+    0x75 , 0x10 ,        //   REPORT_SIZE     ( 16 )
+    0x81 , 0x00 ,        //   INPUT           ( Data , Ary , Abs )
+    0xC0                 // END_COLLECTION
+} ;
+
+
+__ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_NKRO[ HID_KEYBOARD_REPORT_DESC_SIZE ] __ALIGN_END =
+{
+	// General Keyboard Report (Report ID 1)
+    0x05 , 0x01 ,        // USAGE_PAGE        ( Generic Desktop )
+    0x09 , 0x06 ,        // USAGE             ( Keyboard     )
+    0xA1 , 0x01 ,        // COLLECTION        ( Application  )
+    0x85 , 0x01 ,        //   REPORT_ID       (    1 )
+    0x05 , 0x07 ,        //   USAGE_PAGE      ( Keyboard     )
+    0x19 , 0xE0 ,        //   USAGE_MINIMUM   ( Left Control )
+    0x29 , 0xE7 ,        //   USAGE_MAXIMUM   ( Right GUI    )
+    0x15 , 0x00 ,        //   LOGICAL_MINIMUM (    0 )
+    0x25 , 0x01 ,        //   LOGICAL_MAXIMUM (    1 )
+    0x75 , 0x01 ,        //   REPORT_SIZE     (    1 )
+    0x95 , 0x08 ,        //   REPORT_COUNT    (    8 )
+    0x81 , 0x02 ,        //   INPUT           ( Data ,  Var , Abs )
+    0x95 , 0x01 ,        //   REPORT_COUNT    (    1 )
+    0x75 , 0x08 ,        //   REPORT_SIZE     (    8 )
+    0x81 , 0x03 ,        //   INPUT           ( Const , Var , Abs )
+    0x95 , 0x05 ,        //   REPORT_COUNT    (    5 )
+    0x75 , 0x01 ,        //   REPORT_SIZE     (    1 )
+    0x05 , 0x08 ,        //   USAGE_PAGE      ( LEDs )
+    0x19 , 0x01 ,        //   USAGE_MINIMUM   ( Num Lock )
+    0x29 , 0x05 ,        //   USAGE_MAXIMUM   ( Kana     )
+    0x91 , 0x02 ,        //   OUTPUT          ( Data , Var , Abs )
+    0x95 , 0x01 ,        //   REPORT_COUNT    (    1 )
+    0x75 , 0x03 ,        //   REPORT_SIZE     (    3 )
+    0x91 , 0x03 ,        //   OUTPUT          ( Const , Var , Abs )
+    0x95 , 0xA0 ,        //   REPORT_COUNT    ( 160 )
+    0x75 , 0x01 ,        //   REPORT_SIZE     (    1 )
+    0x15 , 0x00 ,        //   LOGICAL_MINIMUM (    0 )
+    0x25 , 0x01 ,        //   LOGICAL_MAXIMUM (    1 )
+    0x05 , 0x07 ,        //   USAGE_PAGE      ( Keyboard )
+    0x19 , 0x00 ,        //   USAGE_MINIMUM   ( 0x00 )
+    0x29 , 0x9F ,        //   USAGE_MAXIMUM   ( 0x9F )
+    0x81 , 0x02 ,        //   INPUT           ( Data , Var , Abs )
+    0xC0 ,               // END_COLLECTION
+
+	// Consumer Control Report ( Report ID 2 )
+    0x05 , 0x0C ,        // USAGE_PAGE        ( Consumer Devices )
+    0x09 , 0x01 ,        // USAGE             ( Consumer Control )
+    0xA1 , 0x01 ,        // COLLECTION        ( Application )
+    0x85 , 0x02 ,        //   REPORT_ID       (  2 )
+    0x1A , 0xB0 , 0x00 , //   USAGE_MINIMUM   ( 0x00B0 )
+    0x2A , 0xEA , 0x00 , //   USAGE_MAXIMUM   ( 0x00EA )
+    0x16 , 0xB0 , 0x00 , //   LOGICAL_MINIMUM ( 0x00B0 )
+    0x26 , 0xEA , 0x00 , //   LOGICAL_MAXIMUM ( 0x00EA )
+    0x95 , 0x01 ,        //   REPORT_COUNT    (  1 )
+    0x75 , 0x10 ,        //   REPORT_SIZE     ( 16 )
+    0x81 , 0x00 ,        //   INPUT           ( Data , Ary , Abs )
+    0xC0                 // END_COLLECTION
+} ;
+
+
 /* USB HID device FS Configuration Descriptor */
 __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[ USB_HID_CONFIG_DESC_SIZ ]  __ALIGN_END =
 {
@@ -163,8 +269,8 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[ USB_HID_CONFIG_DESC_SIZ ]  __AL
 	0x00 ,                                    /* bCountryCode: Hardware target country */
 	0x01 ,                                    /* bNumDescriptors: Number of HID class descriptors */
 	0x22 ,                                    /* bDescriptorType: Report */
-	LOBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
-	HIBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) ,
+	LOBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
+	HIBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) ,
 
 	/******************** Descriptor of Keyboard endpoint ********************/
 	0x07 ,                                    /* bLength: Endpoint Descriptor size */
@@ -208,8 +314,8 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgHSDesc[ USB_HID_CONFIG_DESC_SIZ ]  __AL
 	0x00 ,                                    /* bCountryCode: Hardware target country */
 	0x01 ,                                    /* bNumDescriptors: Number of HID class descriptors */
 	0x22 ,                                    /* bDescriptorType: Report */
-	LOBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
-	HIBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) ,
+	LOBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
+	HIBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) ,
 
 	/******************** Descriptor of Keyboard endpoint ********************/
 	0x07 ,                                    /* bLength: Endpoint Descriptor size */
@@ -253,8 +359,8 @@ __ALIGN_BEGIN static uint8_t USBD_HID_OtherSpeedCfgDesc[ USB_HID_CONFIG_DESC_SIZ
 	0x00 ,                                    /* bCountryCode: Hardware target country */
 	0x01 ,                                    /* bNumDescriptors: Number of HID class descriptors */
 	0x22 ,                                    /* bDescriptorType: Report */
-	LOBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
-	HIBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) ,
+	LOBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
+	HIBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) ,
 
 	/******************** Descriptor of Keyboard endpoint ********************/
 	0x07 ,                                    /* bLength: Endpoint Descriptor size */
@@ -277,8 +383,8 @@ __ALIGN_BEGIN static uint8_t USBD_HID_Desc[ USB_HID_DESC_SIZ ]  __ALIGN_END  =
 	0x00 ,                                    /* bCountryCode: Hardware target country */
 	0x01 ,                                    /* bNumDescriptors: Number of HID class descriptors */
 	0x22 ,                                    /* bDescriptorType: Report */
-	LOBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
-	HIBYTE( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ) ,
+	LOBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) , /* wItemLength: Total length of Report descriptor */
+	HIBYTE( HID_KEYBOARD_REPORT_DESC_SIZE ) ,
 } ;
 
 /* USB Standard Device Descriptor */
@@ -298,111 +404,6 @@ __ALIGN_BEGIN static uint8_t USBD_HID_DeviceQualifierDesc[ USB_LEN_DEV_QUALIFIER
 
 
 /* report description for keyboard */
-
-__ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_6KRO[ HID_KEYBOARD_6KRO_REPORT_DESC_SIZE ]  __ALIGN_END =
-{
-	// General Keyboard Report (Report ID 1)
-	0x05 , 0x01 ,                    // USAGE_PAGE (Generic Desktop)
-	0x09 , 0x06 ,                    // USAGE (Keyboard)
-	0xA1 , 0x01 ,                    // COLLECTION (Application)
-	0x85 , 0x01 ,                    //   REPORT_ID (1)
-	0x05 , 0x07 ,                    //   USAGE_PAGE (Keyboard)
-	0x19 , 0xE0 ,                    //   USAGE_MINIMUM (Keyboard LeftControl)
-	0x29 , 0xE7 ,                    //   USAGE_MAXIMUM (Keyboard Right GUI)
-	0x15 , 0x00 ,                    //   LOGICAL_MINIMUM (0)
-	0x25 , 0x01 ,                    //   LOGICAL_MAXIMUM (1)
-	0x75 , 0x01 ,                    //   REPORT_SIZE (1)
-	0x95 , 0x08 ,                    //   REPORT_COUNT (8)
-	0x81 , 0x02 ,                    //   INPUT (Data ,Var ,Abs)
-	0x95 , 0x01 ,                    //   REPORT_COUNT (1)
-	0x75 , 0x08 ,                    //   REPORT_SIZE (8)
-	0x81 , 0x03 ,                    //   INPUT (Cnst ,Var ,Abs)
-	0x95 , 0x05 ,                    //   REPORT_COUNT (5)
-	0x75 , 0x01 ,                    //   REPORT_SIZE (1)
-	0x05 , 0x08 ,                    //   USAGE_PAGE (LEDs)
-	0x19 , 0x01 ,                    //   USAGE_MINIMUM (Num Lock)
-	0x29 , 0x05 ,                    //   USAGE_MAXIMUM (Kana)
-	0x91 , 0x02 ,                    //   OUTPUT (Data ,Var ,Abs)
-	0x95 , 0x01 ,                    //   REPORT_COUNT (1)
-	0x75 , 0x03 ,                    //   REPORT_SIZE (3)
-	0x91 , 0x03 ,                    //   OUTPUT (Cnst ,Var ,Abs)
-	0x95 , 0x06 ,                    //   REPORT_COUNT (6)
-	0x75 , 0x08 ,                    //   REPORT_SIZE (8)
-	0x15 , 0x00 ,                    //   LOGICAL_MINIMUM (0)
-	0x25 , 0x9F ,                    //   LOGICAL_MAXIMUM (101)
-	0x05 , 0x07 ,                    //   USAGE_PAGE (Keyboard)
-	0x19 , 0x00 ,                    //   USAGE_MINIMUM (Reserved)
-	0x29 , 0x9F ,                    //   USAGE_MAXIMUM (Keyboard Application)
-	0x81 , 0x00 ,                    //   INPUT (Data ,Ary ,Abs)
-	0xC0 ,                           // END_COLLECTION
-
-	// Consumer Control Report (Report ID 2)
-	0x05 , 0x0C ,                    // USAGE_PAGE (Consumer Devices)
-	0x09 , 0x01 ,                    // USAGE (Consumer Control)
-	0xA1 , 0x01 ,                    // COLLECTION (Application)
-	0x85 , 0x02 ,                    //   REPORT_ID (2)
-	0x19 , 0x00 ,                    //   USAGE_MINIMUM (0)
-	0x2A , 0x3C , 0x02 ,             //   USAGE_MAXIMUM (0x23C)
-	0x15 , 0x00 ,                    //   LOGICAL_MINIMUM (0)
-	0x26 , 0x3C , 0x02 ,             //   LOGICAL_MAXIMUM (0x23C)
-	0x95 , 0x01 ,                    //   REPORT_COUNT (1)
-	0x75 , 0x10 ,                    //   REPORT_SIZE (16)
-	0x81 , 0x00 ,                    //   INPUT (Data ,Ary ,Abs)
-	0xC0                             // END_COLLECTION
-} ;
-
-
-__ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_NKRO[ HID_KEYBOARD_NKRO_REPORT_DESC_SIZE ] __ALIGN_END =
-{
-	// General Keyboard Report (Report ID 1)
-    0x05 , 0x01 ,        // USAGE_PAGE (Generic Desktop)
-    0x09 , 0x06 ,        // USAGE (Keyboard)
-    0xA1 , 0x01 ,        // COLLECTION (Application)
-    0x85 , 0x01 ,        // REPORT_ID (1)
-    0x05 , 0x07 ,        // USAGE_PAGE (Keyboard)
-    0x19 , 0xE0 ,        // USAGE_MINIMUM (Left Control)
-    0x29 , 0xE7 ,        // USAGE_MAXIMUM (Right GUI)
-    0x15 , 0x00 ,        // LOGICAL_MINIMUM (0)
-    0x25 , 0x01 ,        // LOGICAL_MAXIMUM (1)
-    0x75 , 0x01 ,        // REPORT_SIZE (1)
-    0x95 , 0x08 ,        // REPORT_COUNT (8)
-    0x81 , 0x02 ,        // INPUT (Data, Var, Abs)
-    0x95 , 0x01 ,        // REPORT_COUNT (1)
-    0x75 , 0x08 ,        // REPORT_SIZE (8)
-    0x81 , 0x03 ,        // INPUT (Const, Var, Abs)
-    0x95 , 0x05 ,        // REPORT_COUNT (5)
-    0x75 , 0x01 ,        // REPORT_SIZE (1)
-    0x05 , 0x08 ,        // USAGE_PAGE (LEDs)
-    0x19 , 0x01 ,        // USAGE_MINIMUM (Num Lock)
-    0x29 , 0x05 ,        // USAGE_MAXIMUM (Kana)
-    0x91 , 0x02 ,        // OUTPUT (Data, Var, Abs)
-    0x95 , 0x01 ,        // REPORT_COUNT (1)
-    0x75 , 0x03 ,        // REPORT_SIZE (3)
-    0x91 , 0x03 ,        // OUTPUT (Const, Var, Abs)
-    0x95 , 0xA0 ,        // REPORT_COUNT (160)    // 0x00 ~ 0x9F → NKRO
-    0x75 , 0x01 ,        // REPORT_SIZE (1)
-    0x15 , 0x00 ,        // LOGICAL_MINIMUM (0)
-    0x25 , 0x01 ,        // LOGICAL_MAXIMUM (1)
-    0x05 , 0x07 ,        // USAGE_PAGE (Keyboard)
-    0x19 , 0x00 ,        // USAGE_MINIMUM (0)
-    0x29 , 0x9F ,        // USAGE_MAXIMUM (0x9F)
-    0x81 , 0x02 ,        // INPUT (Data, Var, Abs)
-    0xC0 ,               // END_COLLECTION
-
-	// Consumer Control Report (Report ID 2)
-    0x05 , 0x0C ,        // USAGE_PAGE (Consumer Devices)
-    0x09 , 0x01 ,        // USAGE (Consumer Control)
-    0xA1 , 0x01 ,        // COLLECTION (Application)
-    0x85 , 0x02 ,        // REPORT_ID (2)
-    0x19 , 0x00 ,        // USAGE_MINIMUM (0)
-    0x2A , 0x3C , 0x02 , // USAGE_MAXIMUM (0x23C)
-    0x15 , 0x00 ,        // LOGICAL_MINIMUM (0)
-    0x26 , 0x3C , 0x02 , // LOGICAL_MAXIMUM (0x23C)
-    0x95 , 0x01 ,        // REPORT_COUNT (1)
-    0x75 , 0x10 ,        // REPORT_SIZE (16)
-    0x81 , 0x00 ,        // INPUT (Data, Ary, Abs)
-    0xC0                 // END_COLLECTION
-} ;
 
 /**
   * @}
@@ -522,14 +523,13 @@ static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef 
 				case USB_REQ_GET_DESCRIPTOR :
 					if( HID_REPORT_DESC == req->wValue >> 8 )
 					{
+						len = MIN( HID_KEYBOARD_REPORT_DESC_SIZE , req->wLength ) ;
 						if( 1 == keyDescProfileMode )
 						{
-							len  = MIN( HID_KEYBOARD_NKRO_REPORT_DESC_SIZE , req->wLength ) ;
 							pbuf = HID_KEYBOARD_ReportDesc_NKRO ;
 						}
 						else
 						{
-							len  = MIN( HID_KEYBOARD_6KRO_REPORT_DESC_SIZE , req->wLength ) ;
 							pbuf = HID_KEYBOARD_ReportDesc_6KRO ;
 						}
 					}
