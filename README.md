@@ -23,6 +23,8 @@ This is a keyboard I made for myself. Since I like the HHKB Style, I have made s
    
  - It basically operates in NKRO mode, and can also be operated in 6KRO mode by changing the DIP Switch state.
    
+ - The right Alt key can be changed to the IME key, depending on the dip switch setting on v 0.9.1.
+   
    
    
    
