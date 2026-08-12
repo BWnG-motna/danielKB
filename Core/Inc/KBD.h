@@ -139,6 +139,9 @@ private :
 	bool     IsConsumerProfile( KeyPage const & keyPage ) ;
 	uint16_t GetConsumerKeyValue( KeyPage const & keyPage ) ;
 
+private :
+	bool WakeUp( bool const & isAnyKeyPressed ) const ;
+
 public :
 	void Run() ;
 	void SetAdcHandle( ADC_HandleTypeDef  * pHandle ) ;

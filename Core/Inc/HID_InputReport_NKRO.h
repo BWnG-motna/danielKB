@@ -17,6 +17,9 @@ class HID_InputReport_NKRO
 {
 
 private :
+	static constexpr uint8_t keyMapCnt = 20 ;
+
+private :
 	uint8_t reportId ;
 	uint8_t rightGUI   : 1 ;
 	uint8_t rightALT   : 1 ;
@@ -27,7 +30,7 @@ private :
 	uint8_t leftSHIFT  : 1 ;
 	uint8_t leftCTRL   : 1 ;
 	uint8_t reserved ;
-	uint8_t keyMap[ 20 ] ;
+	uint8_t keyMap[ keyMapCnt ] ;
 
 	uint16_t consumerKey ;
 
@@ -49,6 +52,7 @@ public :
 
 	void SetConsumerKey( uint16_t const & key ) ;
 	void SetKeyCode( uint8_t const & keycode , bool const & isPress ) ;
+	bool AnyKeyPressed() const ;
 
 public :
 	void Reset() ;

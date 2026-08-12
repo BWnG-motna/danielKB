@@ -257,7 +257,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgFSDesc[ USB_HID_CONFIG_DESC_SIZ ]  __AL
 	0x00 ,                                    /* bAlternateSetting: Alternate setting */
 	0x01 ,                                    /* bNumEndpoints */
 	0x03 ,                                    /* bInterfaceClass: HID */
-	0x00 ,                                    /* bInterfaceSubClass: 0=no boot */
+	0x01 ,                                    /* bInterfaceSubClass: 0=no boot , 1=boot */
 	0x01 ,                                    /* bInterfaceProtocol: 1=keyboard */
 	0x00 ,                                    /* iInterface: Index of string descriptor */
 
@@ -302,7 +302,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_CfgHSDesc[ USB_HID_CONFIG_DESC_SIZ ]  __AL
 	0x00 ,                                    /* bAlternateSetting: Alternate setting */
 	0x01 ,                                    /* bNumEndpoints */
 	0x03 ,                                    /* bInterfaceClass: HID */
-	0x00 ,                                    /* bInterfaceSubClass: 0=no boot */
+	0x01 ,                                    /* bInterfaceSubClass: 0=no boot , 1=boot */
 	0x01 ,                                    /* bInterfaceProtocol: 1=keyboard */
 	0x00 ,                                    /* iInterface: Index of string descriptor */
 
@@ -347,7 +347,7 @@ __ALIGN_BEGIN static uint8_t USBD_HID_OtherSpeedCfgDesc[ USB_HID_CONFIG_DESC_SIZ
 	0x00 ,                                    /* bAlternateSetting: Alternate setting */
 	0x01 ,                                    /* bNumEndpoints */
 	0x03 ,                                    /* bInterfaceClass: HID */
-	0x00 ,                                    /* bInterfaceSubClass: 0=no boot */
+	0x01 ,                                    /* bInterfaceSubClass: 0=no boot , 1=boot */
 	0x01 ,                                    /* bInterfaceProtocol: 1=keyboard */
 	0x00 ,                                    /* iInterface: Index of string descriptor */
 

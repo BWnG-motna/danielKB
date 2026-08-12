@@ -15,7 +15,7 @@ daniel::HID_InputReport_6KRO::HID_InputReport_6KRO( uint8_t const & _reportId )
 	   leftGUI( 0x00 ) ,  leftALT( 0x00 ) ,  leftSHIFT( 0x00 ) ,  leftCTRL( 0x00 ) ,
 	  reserved( 0x00 ) , consumerKey( 0x00 ) , keyPos( 0 )
 {
-	for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
 	{
 		keyMap[ pos ] = 0x00 ;
 	}
@@ -29,7 +29,7 @@ daniel::HID_InputReport_6KRO::HID_InputReport_6KRO( HID_InputReport_6KRO const &
 	   leftGUI( o.leftGUI  ) ,  leftALT( o.leftALT  ) ,  leftSHIFT( o.leftSHIFT  ) ,  leftCTRL( o.leftCTRL  ) ,
 	  reserved( o.reserved ) , consumerKey( o.consumerKey ) , keyPos( o.keyPos )
 {
-    for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+    for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
     {
         keyMap[ pos ] = o.keyMap[ pos ] ;
     }
@@ -56,7 +56,7 @@ daniel::HID_InputReport_6KRO & daniel::HID_InputReport_6KRO::operator=( HID_Inpu
     consumerKey = o.consumerKey ;
     keyPos      = o.keyPos ;
 
-    for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+    for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
     {
         keyMap[ pos ] = o.keyMap[ pos ] ;
     }
@@ -87,7 +87,7 @@ bool daniel::HID_InputReport_6KRO::operator==( HID_InputReport_6KRO const & o ) 
     }
 
 
-    for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+    for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
     {
         if( keyMap[ pos ] != o.keyMap[ pos ] )
         {
@@ -120,7 +120,7 @@ void daniel::HID_InputReport_6KRO::Reset()
 
 	reserved    = 0x00 ;
 
-	for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
 	{
 		keyMap[ pos ] = 0x00 ;
 	}
@@ -216,7 +216,7 @@ void daniel::HID_InputReport_6KRO::SetKeyCode6( uint8_t const & keyCode )
 
 void daniel::HID_InputReport_6KRO::SetKeyCode( uint8_t const & keyCode )
 {
-	for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
 	{
 		if( keyPos == pos )
 		{
@@ -229,7 +229,7 @@ void daniel::HID_InputReport_6KRO::SetKeyCode( uint8_t const & keyCode )
 	}
 
 	++keyPos ;
-	if( 6 <= keyPos )
+	if( keyMapCnt <= keyPos )
 	{
 		keyPos = 0 ;
 	}
@@ -240,7 +240,7 @@ void daniel::HID_InputReport_6KRO::SetKeyCode( uint8_t const ( & keyCode )[ 6 ] 
 {
 	keyPos = 0 ;
 
-	for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
 	{
 		keyMap[ pos ] = keyCode[ pos ] ;
 	}
@@ -255,7 +255,7 @@ void daniel::HID_InputReport_6KRO::SetReportID( uint8_t const & id )
 
 void daniel::HID_InputReport_6KRO::GetKeyCode( uint8_t ( & keyCode )[ 6 ] )
 {
-	for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
 	{
 		keyCode[ pos ] = keyMap[ pos ] ;
 	}
@@ -264,23 +264,23 @@ void daniel::HID_InputReport_6KRO::GetKeyCode( uint8_t ( & keyCode )[ 6 ] )
 
 void daniel::HID_InputReport_6KRO::SortKeyCode( uint8_t const ( & prev )[ 6 ] )
 {
-	uint8_t curr[ 6 ] ;
-	for( uint8_t pos = 0 ; pos < 6 ; ++pos )
+	uint8_t curr[ keyMapCnt ] ;
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
 	{
 		curr[ pos ] = keyMap[ pos ] ;
 		keyMap[ pos ] = 0 ;
 	}
 
-	bool used[ 6 ] = { false , false , false , false , false , false } ;
+	bool used[ keyMapCnt ] = { false , false , false , false , false , false } ;
 
-	for( uint8_t kpos = 0 ; kpos < 6 ; ++kpos )
+	for( uint8_t kpos = 0 ; kpos < keyMapCnt ; ++kpos )
 	{
 		if( 0 == prev[ kpos ] )
 		{
 			continue ;
 		}
 
-		for( uint8_t cpos = 0 ; cpos < 6 ; ++cpos )
+		for( uint8_t cpos = 0 ; cpos < keyMapCnt ; ++cpos )
 		{
 			if( false == used[ cpos ] && curr[ cpos ] == prev[ kpos ] )
 			{
@@ -291,14 +291,14 @@ void daniel::HID_InputReport_6KRO::SortKeyCode( uint8_t const ( & prev )[ 6 ] )
 		}
 	}
 
-	for( uint8_t cpos = 0 ; cpos < 6 ; ++cpos )
+	for( uint8_t cpos = 0 ; cpos < keyMapCnt ; ++cpos )
 	{
 		if( true == used[ cpos ] || 0 == curr[ cpos ] )
 		{
 			continue ;
 		}
 
-		for( uint8_t kpos = 0 ; kpos < 6 ; ++kpos )
+		for( uint8_t kpos = 0 ; kpos < keyMapCnt ; ++kpos )
 		{
 			if( 0 == keyMap[ kpos ] )
 			{
@@ -407,4 +407,58 @@ uint8_t daniel::HID_InputReport_6KRO::GetReportId() const
 void daniel::HID_InputReport_6KRO::SetConsumerKey( uint16_t const & key )
 {
 	consumerKey = key ;
+}
+
+
+bool daniel::HID_InputReport_6KRO::AnyKeyPressed() const
+{
+	if( true == rightGUI )
+	{
+		return true ;
+	}
+
+	if( true == rightALT )
+	{
+		return true ;
+	}
+
+	if( true == rightSHIFT )
+	{
+		return true ;
+	}
+
+	if( true == rightCTRL )
+	{
+		return true ;
+	}
+
+	if( true == leftGUI )
+	{
+		return true ;
+	}
+
+	if( true == leftALT )
+	{
+		return true ;
+	}
+
+	if( true == leftSHIFT )
+	{
+		return true ;
+	}
+
+	if( true == leftCTRL )
+	{
+		return true ;
+	}
+
+	for( uint8_t pos = 0 ; pos < keyMapCnt ; ++pos )
+	{
+		if( 0 < keyMap[ pos ] )
+		{
+			return true ;
+		}
+	}
+
+	return false ;
 }

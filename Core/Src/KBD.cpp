@@ -433,6 +433,7 @@ void daniel::KBD::LoopFor6KRO()
 
 	input.SortKeyCode( keyCode ) ;
 
+	WakeUp( input.AnyKeyPressed() ) ;
 	if( inputReport6KRO != input )
 	{
 		KeyPress( input ) ;
@@ -448,6 +449,7 @@ void daniel::KBD::LoopForNKRO()
 
 	HID_InputReport_NKRO input = MakeHIDInputReport_NKRO() ;
 
+	WakeUp( input.AnyKeyPressed() ) ;
 	if( inputReportNKRO != input )
 	{
 		KeyPress( input ) ;
@@ -812,6 +814,45 @@ void daniel::KBD::SpKey()
 			DelayMs( ( HID_HS_BINTERVAL < HID_FS_BINTERVAL ) ?  HID_FS_BINTERVAL : HID_HS_BINTERVAL ) ; // consider polling interval
 		}
 	}
+}
+
+
+bool daniel::KBD::WakeUp( bool const & isAnyKeyPressed ) const
+{
+	if( nullptr == pUsbHandle )
+	{
+		return false ;
+	}
+
+	if( USBD_STATE_SUSPENDED != pUsbHandle->dev_state )
+	{
+		return false ;
+	}
+
+	if( 1 != pUsbHandle->dev_remote_wakeup )
+	{
+		return false ;
+	}
+
+	if( false == isAnyKeyPressed )
+	{
+		return false ;
+	}
+
+	PCD_HandleTypeDef * pTypeDef = static_cast< PCD_HandleTypeDef * >( pUsbHandle->pData ) ;
+	if( nullptr == pTypeDef )
+	{
+		return false ;
+	}
+
+	HAL_PCD_ActivateRemoteWakeup( pTypeDef ) ;
+	HAL_Delay( 10 ) ;
+	HAL_PCD_DeActivateRemoteWakeup( pTypeDef ) ;
+
+	pUsbHandle->dev_state = USBD_STATE_CONFIGURED ;
+	pUsbHandle->dev_remote_wakeup = 0U ;
+
+	return true ;
 }
 
 

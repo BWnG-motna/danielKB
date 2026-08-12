@@ -17,6 +17,9 @@ class HID_InputReport_6KRO
 {
 
 private :
+	static constexpr uint8_t keyMapCnt = 6 ;
+
+private :
 	uint8_t reportId ;
 	uint8_t rightGUI   : 1 ;
 	uint8_t rightALT   : 1 ;
@@ -27,7 +30,7 @@ private :
 	uint8_t leftSHIFT  : 1 ;
 	uint8_t leftCTRL   : 1 ;
 	uint8_t reserved ;
-	uint8_t keyMap[ 6 ] ;
+	uint8_t keyMap[ keyMapCnt ] ;
 
 	uint16_t consumerKey ;
 
@@ -62,6 +65,7 @@ public :
 public :
 	void SortKeyCode( uint8_t const ( & keyCode )[ 6 ] ) ;
 	void GetKeyCode( uint8_t ( & keyCode )[ 6 ] ) ;
+	bool AnyKeyPressed() const ;
 
 public :
 	void Reset() ;
