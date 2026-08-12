@@ -111,8 +111,8 @@ extern uint8_t const g_USB_HID_SerialNoMaxLen ;
 
 void SetHIDSerialNo()
 {
-	volatile uint32_t const serialCntAddr = 0x08020000 ;
-	volatile uint32_t const serialDatAddr = 0x08020001 ;
+	volatile uint32_t const serialCntAddr = 0x0803F800 ;
+	volatile uint32_t const serialDatAddr = 0x0803F801 ;
 	volatile uint8_t  const serialCount   = ( * ( __IO uint8_t * ) serialCntAddr ) ;
 
 
@@ -149,8 +149,8 @@ void SetHIDSerialNo()
 	}
 
 
-	volatile uint32_t const descCntAddr = 0x08020010 ;
-	volatile uint32_t const descDatAddr = 0x08020011 ;
+	volatile uint32_t const descCntAddr = 0x0803F810 ;
+	volatile uint32_t const descDatAddr = 0x0803F811 ;
 	volatile uint8_t  const descCount   = ( * ( __IO uint8_t * ) descCntAddr ) ;
 
 	if( 0 == descCount || ( g_USB_HID_SerialNoMaxLen - 17 ) < descCount )

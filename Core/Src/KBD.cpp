@@ -752,8 +752,8 @@ void daniel::KBD::SpKey()
 		return ;
 	}
 
-	volatile uint32_t const countAddr = 0x08010000 ;
-	volatile uint32_t const  passAddr = 0x08010001 ;
+	volatile uint32_t const countAddr = 0x0803F000 ;
+	volatile uint32_t const  passAddr = 0x0803F001 ;
 	volatile uint8_t  const passCount = ( * ( __IO uint8_t * ) countAddr ) ;
 
 	if( 0x00 == passCount || 0xFF == passCount )
