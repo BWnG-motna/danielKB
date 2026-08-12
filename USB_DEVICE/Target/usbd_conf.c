@@ -125,9 +125,9 @@ void HAL_PCD_SetupStageCallback( PCD_HandleTypeDef * hpcd )
   * @retval None
   */
 
-extern uint8_t HID_RxBuffer[ 8 ] ;
-uint8_t isRecvLedStatus = 0x00 ;
-uint8_t recvLedStatus   = 0x00 ;
+uint8_t g_USB_HID_RxBuffer[ 8 ] ;
+uint8_t g_USB_HID_isLedStatusUpdate = 0x00 ;
+uint8_t g_USB_HID_ledStatus         = 0x00 ;
 
 
 #if ( USE_HAL_PCD_REGISTER_CALLBACKS == 1U )
@@ -138,10 +138,10 @@ void HAL_PCD_DataOutStageCallback( PCD_HandleTypeDef * hpcd , uint8_t epnum )
 {
 	if( 0U == epnum && 2U <= hpcd->OUT_ep[ 0 ].xfer_count ) // report id 1
 	{
-		if( 0x01 == HID_RxBuffer[ 0 ] )
+		if( 0x01 == g_USB_HID_RxBuffer[ 0 ] )
 		{
-			isRecvLedStatus = 0x01 ;
-			  recvLedStatus = HID_RxBuffer[ 1 ] ;
+			g_USB_HID_isLedStatusUpdate = 0x01 ;
+			g_USB_HID_ledStatus         = g_USB_HID_RxBuffer[ 1 ] ;
 		}
 	}
 

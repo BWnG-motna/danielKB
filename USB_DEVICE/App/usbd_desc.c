@@ -335,12 +335,13 @@ uint8_t * USBD_FS_InterfaceStrDescriptor( USBD_SpeedTypeDef speed , uint16_t * l
   * @retval None
   */
 
-extern uint8_t HIDSerialNo[ 12 ] ;
-extern uint8_t HIDSerialNoLen ;
+uint8_t g_USB_HID_SerialNo[ 126 ] ;
+uint8_t g_USB_HID_SerialNoLen ;
+uint8_t const g_USB_HID_SerialNoMaxLen = 126 ;
 
 static void Get_SerialNum( void )
 {
-	if( 0 == HIDSerialNoLen || 12 < HIDSerialNoLen )
+	if( 0 == g_USB_HID_SerialNoLen || 126 < g_USB_HID_SerialNoLen )
 	{
 		uint32_t deviceserial0 ;
 		uint32_t deviceserial1 ;
@@ -357,15 +358,18 @@ static void Get_SerialNum( void )
 			IntToUnicode( deviceserial0 , & USBD_StringSerial[  2 ] , 8 ) ;
 			IntToUnicode( deviceserial1 , & USBD_StringSerial[ 18 ] , 4 ) ;
 		}
+
+		USBD_StringSerial[ 0 ] = 0x1A ;
+		USBD_StringSerial[ 1 ] = USB_DESC_TYPE_STRING ;
 	}
 	else
 	{
-		USBD_StringSerial[ 0 ] = ( uint8_t )( ( HIDSerialNoLen * 2U ) + 2U ) ;
-		USBD_StringSerial[ 1 ] = ( uint8_t ) USB_DESC_TYPE_STRING ;
+		USBD_StringSerial[ 0 ] = ( uint8_t )( ( g_USB_HID_SerialNoLen * 2U ) + 2U ) ;
+		USBD_StringSerial[ 1 ] = ( uint8_t )( USB_DESC_TYPE_STRING  ) ;
 
-		for( uint8_t pos = 0 ; pos < HIDSerialNoLen ; pos++ )
+		for( uint8_t pos = 0 ; pos < g_USB_HID_SerialNoLen ; pos++ )
 		{
-			USBD_StringSerial[ 2U + ( pos * 2U ) ] = HIDSerialNo[ pos ] ;
+			USBD_StringSerial[ 2U + ( pos * 2U ) ] = g_USB_HID_SerialNo[ pos ] ;
 			USBD_StringSerial[ 3U + ( pos * 2U ) ] = 0 ;
 		}
 	}

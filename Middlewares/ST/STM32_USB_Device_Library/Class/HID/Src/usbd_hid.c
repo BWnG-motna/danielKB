@@ -128,7 +128,7 @@ USBD_ClassTypeDef  USBD_HID =
 } ;
 
 
-extern uint8_t keyDescProfileMode ; // 1 == NKRO , other == 6KRO
+uint8_t g_USB_HID_keyDescProfileMode = 1 ; // 1 == NKRO , other == 6KRO
 
 
 __ALIGN_BEGIN static uint8_t HID_KEYBOARD_ReportDesc_6KRO[ HID_KEYBOARD_REPORT_DESC_SIZE ]  __ALIGN_END =
@@ -469,7 +469,7 @@ static uint8_t USBD_HID_DeInit( USBD_HandleTypeDef * pdev , uint8_t cfgidx )
   * @retval status
   */
 
-uint8_t HID_RxBuffer[ 8 ] ;
+extern uint8_t g_USB_HID_RxBuffer[ 8 ] ;
 
 static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef * req )
 {
@@ -504,7 +504,7 @@ static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef 
 				{
 				    if( 0x02 == ( req->wValue >> 8 ) )
 				    {
-				        USBD_CtlPrepareRx( pdev , HID_RxBuffer , req->wLength ) ;
+				        USBD_CtlPrepareRx( pdev , g_USB_HID_RxBuffer , req->wLength ) ;
 				    }
 				    break ;
 				}
@@ -535,7 +535,7 @@ static uint8_t USBD_HID_Setup( USBD_HandleTypeDef * pdev , USBD_SetupReqTypedef 
 					if( HID_REPORT_DESC == req->wValue >> 8 )
 					{
 						len = MIN( HID_KEYBOARD_REPORT_DESC_SIZE , req->wLength ) ;
-						if( 1 == keyDescProfileMode )
+						if( 1 == g_USB_HID_keyDescProfileMode )
 						{
 							pbuf = HID_KEYBOARD_ReportDesc_NKRO ;
 						}

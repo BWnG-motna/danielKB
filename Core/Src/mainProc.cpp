@@ -26,11 +26,6 @@ extern uint32_t millisec ;
 
 daniel::USART uart ;
 
-uint8_t keyDescProfileMode = 1 ; // 1 == NKRO , 2 == 6KRO
-uint8_t HIDSerialNo[ 12 ] ;
-uint8_t HIDSerialNoLen ;
-
-
 void SetKeyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp ) ;
 bool ReadImeMode( daniel::GPIO & gpio ) ;
 
@@ -66,6 +61,11 @@ void MainProc()
 }
 
 
+
+
+extern uint8_t g_USB_HID_keyDescProfileMode ; // 1 == NKRO , 2 == 6KRO
+
+
 void SetKeyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp )
 {
 	bool sw = false ;
@@ -76,7 +76,7 @@ void SetKeyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp )
 	// even if the MCP23008T used as the GPIO expander does not operate properly.
 
 	using KP = daniel::KeyProfile ;
-	kp = ( 1 == keyDescProfileMode ) ? KP::Profile_NKRO : KP::Profile_6KRO ;
+	kp = ( 1 == g_USB_HID_keyDescProfileMode ) ? KP::Profile_NKRO : KP::Profile_6KRO ;
 
 	if( false == gpio.GetSwStatus( sw , pos ) )
 	{
@@ -84,7 +84,7 @@ void SetKeyDescProfileMode( daniel::GPIO & gpio , daniel::KeyProfile & kp )
 	}
 
 	kp = ( true == sw ) ? KP::Profile_6KRO : KP::Profile_NKRO ;
-	keyDescProfileMode = ( true == sw ) ? 2 : 1 ;
+	g_USB_HID_keyDescProfileMode = ( true == sw ) ? 2 : 1 ;
 }
 
 
@@ -102,43 +102,78 @@ bool ReadImeMode( daniel::GPIO & gpio )
 }
 
 
+
+
+extern uint8_t       g_USB_HID_SerialNo[ 126 ] ;
+extern uint8_t       g_USB_HID_SerialNoLen ;
+extern uint8_t const g_USB_HID_SerialNoMaxLen ;
+
+
 void SetHIDSerialNo()
 {
-	volatile uint32_t const countAddr = 0x08020000 ;
-	volatile uint32_t const  dataAddr = 0x08020001 ;
-	volatile uint8_t  const dataCount = ( * ( __IO uint8_t * ) countAddr ) ;
+	volatile uint32_t const serialCntAddr = 0x08020000 ;
+	volatile uint32_t const serialDatAddr = 0x08020001 ;
+	volatile uint8_t  const serialCount   = ( * ( __IO uint8_t * ) serialCntAddr ) ;
 
-	HIDSerialNo[  0 ] = 'd' ;
-	HIDSerialNo[  1 ] = 'a' ;
-	HIDSerialNo[  2 ] = 'n' ;
-	HIDSerialNo[  3 ] = 'i' ;
-	HIDSerialNo[  4 ] = 'e' ;
-	HIDSerialNo[  5 ] = 'l' ;
-	HIDSerialNo[  6 ] = 'K' ;
-	HIDSerialNo[  7 ] = 'B' ;
-	HIDSerialNo[  8 ] = '_' ;
-	HIDSerialNo[  9 ] = '0' ;
-	HIDSerialNo[ 10 ] = '0' ;
-	HIDSerialNo[ 11 ] = '0' ;
 
-	HIDSerialNoLen = 12 ;
+	char const * pDefaultSerialNo = "danielKB_no.000" ;
 
-	if( 3 != dataCount )
+	g_USB_HID_SerialNoLen = 15 ;
+	for( uint8_t pos = 0 ; pos < 15 ; ++pos )
+	{
+		g_USB_HID_SerialNo[ pos ] = static_cast< uint8_t >( pDefaultSerialNo[ pos ] ) ;
+	}
+
+	if( 3 != serialCount )
 	{
 		return ;
 	}
 
-	for( uint8_t pos = 0 ; pos < dataCount ; ++pos )
+
+	for( uint8_t pos = 0 ; pos < serialCount ; ++pos )
 	{
-		volatile uint8_t const val = ( * ( __IO uint8_t * ) ( dataAddr + pos ) ) ;
+		volatile uint8_t const val = ( * ( __IO uint8_t * ) ( serialDatAddr + pos ) ) ;
 
 		uint8_t no = val ;
+
+		if( '0' <= no && '9' >= no )
+		{
+			no = no - '0' ;
+		}
 		if( 9 < no )
 		{
 			no = 0 ;
 		}
 
-		HIDSerialNo[ 9 + pos ] = no + '0' ;
+		g_USB_HID_SerialNo[ 12 + pos ] = no + '0' ;
+	}
+
+
+	volatile uint32_t const descCntAddr = 0x08020010 ;
+	volatile uint32_t const descDatAddr = 0x08020011 ;
+	volatile uint8_t  const descCount   = ( * ( __IO uint8_t * ) descCntAddr ) ;
+
+	if( 0 == descCount || ( g_USB_HID_SerialNoMaxLen - 17 ) < descCount )
+	{
+		return ;
+	}
+
+	g_USB_HID_SerialNo[ 15 ] = ' ' ;
+	g_USB_HID_SerialNo[ 16 ] = ' ' ;
+	g_USB_HID_SerialNoLen += 2 ;
+
+	for( uint8_t pos = 0 ; pos < descCount ; ++pos )
+	{
+		volatile uint8_t const val = ( * ( __IO uint8_t * ) ( descDatAddr + pos ) ) ;
+
+		uint8_t no = val ;
+		if( 0x20 > no || 0x7e < no )
+		{
+			no = ' ' ;
+		}
+
+		g_USB_HID_SerialNo[ 17 + pos ] = no ;
+		g_USB_HID_SerialNoLen++ ;
 	}
 }
 
