@@ -38,6 +38,13 @@
   ******************************************************************************
   */
 
+/**
+  * Modified by Daniel Lee
+  * Original code Copyright (c) STMicroelectronics
+  * Licensed under SLA0044
+  */
+
+
 /* BSPDependencies
 - "stm32xxxxx_{eval}{discovery}{nucleo_144}.c"
 - "stm32xxxxx_{eval}{discovery}_io.c"

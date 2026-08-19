@@ -16,6 +16,13 @@
   *
   ******************************************************************************
   */
+
+/**
+  * Modified by Daniel Lee
+  * Original code Copyright (c) STMicroelectronics
+  * Licensed under SLA0044
+  */
+
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/

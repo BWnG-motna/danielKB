@@ -14,6 +14,13 @@
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
+
+/**
+  * Modified by Daniel Lee
+  * Original code Copyright (c) STMicroelectronics
+  * Licensed under SLA0044
+  */
+
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/

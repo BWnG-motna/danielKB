@@ -17,6 +17,12 @@
   ******************************************************************************
   */
 
+/**
+  * Modified by Daniel Lee
+  * Original code Copyright (c) STMicroelectronics
+  * Licensed under SLA0044
+  */
+
 /* Includes ------------------------------------------------------------------*/
 #include "usbd_ctlreq.h"
 #include "usbd_ioreq.h"

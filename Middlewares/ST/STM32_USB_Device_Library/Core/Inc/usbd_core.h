@@ -17,6 +17,13 @@
   ******************************************************************************
   */
 
+/**
+  * Modified by Daniel Lee
+  * Original code Copyright (c) STMicroelectronics
+  * Licensed under SLA0044
+  */
+
+
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __USBD_CORE_H
 #define __USBD_CORE_H
