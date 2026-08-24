@@ -881,7 +881,7 @@ bool daniel::KBD::SendReport( uint8_t * pDat , uint16_t const & len )
 	}
 
 	phhid->state = HID_BUSY ;
-	USBD_StatusTypeDef typeDef = USBD_LL_Transmit( pUsbHandle , HID_EPIN_ADDR , pDat , len ) ;
+	USBD_StatusTypeDef typeDef = USBD_LL_Transmit( pUsbHandle , HID_EPIN_ADDR0 , pDat , len ) ;
 	if( USBD_OK != typeDef )
 	{
 		return false ;
