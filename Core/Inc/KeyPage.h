@@ -190,7 +190,7 @@ enum class KeyPage : uint8_t
 	International7    = 0x8D ,
 	International8    = 0x8E ,
 	International9    = 0x8F ,
-	Lang1             = 0x90 , // IME On  / Kana          / Hangul-English toglle
+	Lang1             = 0x90 , // IME On  / Kana          / Hangul-English toggle
 	Lang2             = 0x91 , // IME Off / Alphganumeric / Hanja
 	Lang3             = 0x92 ,
 	Lang4             = 0x93 ,
@@ -267,6 +267,8 @@ enum class KeyPage : uint8_t
 	RightSHIFT        = 0xE5 ,
 	RightALT          = 0xE6 ,
 	RightGUI          = 0xE7 ,
+
+	PlayStop          = 0xF0 ,
 
 } ; // enum class KeyPage
 

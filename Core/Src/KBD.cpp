@@ -41,11 +41,11 @@ daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 /* A */ key::F1          , key::F2         , key::None      , key::None          , key::None        , key::None         , key::VolumeDown  , key::VolumeUp  ,
 /* B */ key::F3          , key::F4         , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* C */ key::F5          , key::F6         , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* D */ key::F7          , key::F8         , key::None      , key::Insert        , key::None        , key::None         , key::Mute        , key::None      ,
-/* E */ key::F9          , key::F10        , key::None      , key::PrintScreen   , key::None        , key::LeftArrow    , key::None        , key::DownArrow ,
+/* D */ key::F7          , key::F8         , key::None      , key::Insert        , key::None        , key::None         , key::Mute        , key::Home      ,
+/* E */ key::F9          , key::F10        , key::None      , key::PrintScreen   , key::None        , key::LeftArrow    , key::End         , key::DownArrow ,
 /* F */ key::F11         , key::F12        , key::None      , key::DeleteForward , key::UpArrow     , key::None         , key::RightArrow  , key::None      ,
 /* G */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* H */ key::CapsLock    , key::None       , key::None      , key::Space         , key::Space       , key::Space        , key::Space       , key::None      ,
+/* H */ key::CapsLock    , key::None       , key::None      , key::PlayStop      , key::Space       , key::Space        , key::Space       , key::None      ,
 /* I */ key::LeftCONTROL , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* J */ key::LeftSHIFT   , key::RightSHIFT , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* K */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::LeftALT     , key::RightALT  ,
@@ -943,6 +943,10 @@ uint16_t daniel::KBD::GetConsumerKeyValue( KeyPage const & keyPage )
 
 		case key::Mute :
 			k = ckey::Mute ;
+			break ;
+
+		case key::PlayStop :
+			k = ckey::Play_Pause ;
 			break ;
 
 		default :
