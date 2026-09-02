@@ -14,7 +14,7 @@ This is a keyboard I made for myself. Since I like the HHKB Style, I have made s
 ## Version
 
 - Hardware : v 1.6.0
-- Firmware : v 1.0.x 
+- Firmware : v 1.1.x 
 
 
 
