@@ -45,7 +45,7 @@ daniel::KeyPage const daniel::KBD::keymap[ daniel::KBD::keyCnt * 2 ] = {
 /* E */ key::F9          , key::F10        , key::None      , key::PrintScreen   , key::None        , key::LeftArrow    , key::End         , key::DownArrow ,
 /* F */ key::F11         , key::F12        , key::None      , key::DeleteForward , key::UpArrow     , key::None         , key::RightArrow  , key::None      ,
 /* G */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
-/* H */ key::CapsLock    , key::None       , key::None      , key::PlayStop      , key::Space       , key::Space        , key::Space       , key::None      ,
+/* H */ key::CapsLock    , key::None       , key::None      , key::PlayStop      , key::Space       , key::Space        , key::PlayStop    , key::None      ,
 /* I */ key::LeftCONTROL , key::None       , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* J */ key::LeftSHIFT   , key::RightSHIFT , key::None      , key::None          , key::None        , key::None         , key::None        , key::None      ,
 /* K */ key::None        , key::None       , key::None      , key::None          , key::None        , key::None         , key::LeftALT     , key::RightALT  ,
